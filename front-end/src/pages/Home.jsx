@@ -1,7 +1,10 @@
 
-export const Home = () => {
+export const Home = (setUser) => {
+
 	return (
-		<>Hello World! This is Home</>
+		<div className="home">
+            <h1>Home</h1>
+        </div>
 	);
 };
 
