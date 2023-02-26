@@ -1,5 +1,6 @@
 import { redirect } from "react-router-dom";
-import { SignUpWithEmailPassword, createUser } from "../firebase";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 
 export const signUpAction = async ({ request }) => {
     const data = await request.formData();
@@ -11,36 +12,38 @@ export const signUpAction = async ({ request }) => {
     if (password !== confirmPassword)
         return { error: "Passwords do not match." };
     
-    const userCredential = await SignUpWithEmailPassword(email, password)
+    const auth = getAuth();
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     .catch(error => {
         switch (error.code) {
         case "auth/email-already-in-use":
-            return { error: "Email already in use." };
+            return { error: "Email already in use.", variant: "danger" };
 
         case "auth/invalid-email":
-            return { error: "Invalid email." };
+            return { error: "Invalid email.", variant: "danger" };
         
         case "auth/weak-password":
-            return { error: "Weak password." };
+            return { error: "Weak password.", variant: "danger" };
         
         default:
-            return { error: "Unknown error." };
+            return { error: "Unknown error.", variant: "danger" };
         }
     });
     
     if (userCredential.error) return userCredential;
     
+    const db = getFirestore();
     const user = userCredential.user;
-    await createUser(user.uid, {
-        createdAt: user.metadata.creationTime,
+    await setDoc(doc(db, "users", user.uid), {
+        createdAt: user.metadata.createdAt,
         displayName: user.displayName,
         email: user.email,
         emailVerified: user.emailVerified,
+        isAdmin: false,
         isAnonymous: user.isAnonymous,
-        lastLoginAt: user.metadata.lastSignInTime,
+        lastLoginAt: user.metadata.lastLoginAt,
         phoneNumber: user.phoneNumber,
         photoURL: user.photoURL,
-        role: 'user',
     });
 
     return redirect('/');

@@ -1,7 +1,7 @@
 import {
 	createBrowserRouter,
 	createRoutesFromElements,
-	Route
+	Route,
 } from "react-router-dom";
 
 // Layouts
@@ -12,9 +12,12 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Products from "./pages/products/Products";
-import ProductDetails from "./pages/products/ProductDetails";
 import NotFound from "./pages/NotFound";
+import Products from "./pages/products/Products";
+import ManageUsers from "./pages/manage/ManageUsers";
+import ManageOrders from "./pages/manage/ManageOrders";
+import ManageProducts from "./pages/manage/ManageProducts";
+import ProductDetails from "./pages/products/ProductDetails";
 
 // Loaders
 import productsLoader from "./loaders/productsLoader";
@@ -57,30 +60,43 @@ export const router = createBrowserRouter(
 				/>
 			</Route>
 
-			{/* <Route path="management" element={<ManagementLayout />}>
+			<Route path="manage">
 				<Route
 					path="products"
 					element={<ManageProducts />}
-					loader={ ManageProductsLoader }
+					// loader={ ManageProductsLoader }
 				>
-					<Route
+					{/* <Route
 						path=":id"
 						element={<ManageProductDetails />}
 						loader={ ManageProductDetailsLoader }
-					/>
+					/> */}
 				</Route>
+		
 				<Route
 					path="orders"
 					element={<ManageOrders />}
-					loader={ ManageOrdersLoader }
+					// loader={ ManageOrdersLoader }
 				>
-					<Route
+					{/* <Route
 						path=":id"
 						element={<ManageOrderDetails />}
 						laaader={ ManageOrderDetailsLoader }
-					/>
+					/> */}
 				</Route>
-			</Route> */}
+
+				<Route
+					path="users"
+					element={<ManageUsers />}
+					// loader={ ManageUsersLoader }
+				>
+					{/* <Route
+						path=":id"
+						element={<ManageUserDetails />}
+						laaader={ ManageUserDetailsLoader }
+					/> */}
+				</Route>
+			</Route>
 			
 			<Route path="*" element={<NotFound />} />
 		</Route>
