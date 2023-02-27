@@ -11,19 +11,19 @@ export const signInAction = async ({ request }) => {
     .catch(error => {
         switch (error.code) {
             case 'auth/invalid-email':
-                return { error: "Invalid email.", variant: "danger" };
+                return { message: "Invalid email.", variant: "danger" };
             
             case 'auth/user-disabled':
-                return { error: "User disabled.", variant: "danger" };
+                return { message: "User disabled.", variant: "danger" };
 
             case 'auth/user-not-found':
-                return { error: "User not found.", variant: "danger" };
+                return { message: "User not found.", variant: "danger" };
             
             case 'auth/wrong-password':
-                return { error: "Wrong password.", variant: "danger" };
+                return { message: "Wrong password.", variant: "danger" };
             
             default:
-                return { error: "Unknown error.", variant: "danger" };
+                return { message: "Unknown error.", variant: "danger" };
         }
     });
 

@@ -17,16 +17,16 @@ export const signUpAction = async ({ request }) => {
     .catch(error => {
         switch (error.code) {
         case "auth/email-already-in-use":
-            return { error: "Email already in use.", variant: "danger" };
+            return { message: "Email already in use.", variant: "danger" };
 
         case "auth/invalid-email":
-            return { error: "Invalid email.", variant: "danger" };
+            return { message: "Invalid email.", variant: "danger" };
         
         case "auth/weak-password":
-            return { error: "Weak password.", variant: "danger" };
+            return { message: "Weak password.", variant: "danger" };
         
         default:
-            return { error: "Unknown error.", variant: "danger" };
+            return { message: "Unknown error.", variant: "danger" };
         }
     });
     
@@ -41,6 +41,7 @@ export const signUpAction = async ({ request }) => {
         emailVerified: user.emailVerified,
         isAdmin: false,
         isAnonymous: user.isAnonymous,
+        isDisable: false,
         lastLoginAt: user.metadata.lastLoginAt,
         phoneNumber: user.phoneNumber,
         photoURL: user.photoURL,

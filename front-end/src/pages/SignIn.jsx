@@ -22,12 +22,10 @@ export const SignIn = () => {
                 email: user.email,
                 emailVerified: user.emailVerified,
                 isAnonymous: user.isAnonymous,
-                lastLoginAt: user.metadata.lastSignInTime,
+                lastLoginAt: user.metadata.lastLoginAt,
                 phoneNumber: user.phoneNumber,
                 photoURL: user.photoURL,
-            }).then(() => {
-                console.log("Document successfully written!");
-            }).catch((error) => {
+            }, { merge: true }).catch((error) => {
                 console.error("Error writing document: ", error);
             });
 
@@ -44,11 +42,11 @@ export const SignIn = () => {
         <div className="sign-in">
         <Row>
         <Col />
-        <Col xs={5}>
+        <Col xs={6}>
         <Card className="text-center my-5">
         <Card.Body>
             <Card.Title className='my-3'><b>登入</b></Card.Title>
-            <Form method="POST" action="/signin">
+            <Form method="POST">
                 <div className='form-floating my-3'>
                     <input className="form-control"
                         type="email"
@@ -70,8 +68,8 @@ export const SignIn = () => {
                 <Button className="my-3" type='submit'>登入</Button>
             </Form>
 
-            <Card.Link as={Link} to="/signup">註冊</Card.Link>
-            <Card.Link as={Link} to="/forgotpassword">忘記密碼</Card.Link>
+            <Card.Link as={Link} to="/signup" className="link-secondary">註冊</Card.Link>
+            <Card.Link as={Link} to="/forgotpassword" className="link-secondary">忘記密碼</Card.Link>
 
             <hr />
             <Button variant="outline-link" size="lg"

@@ -13,19 +13,25 @@ import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
+// products pages
 import Products from "./pages/products/Products";
-import ManageUsers from "./pages/manage/ManageUsers";
-import ManageOrders from "./pages/manage/ManageOrders";
-import ManageProducts from "./pages/manage/ManageProducts";
 import ProductDetails from "./pages/products/ProductDetails";
+import ManageProducts from "./pages/manage/products/ManageProducts";
+import AddProduct from "./pages/manage/products/AddProduct";
+// users pages
+import ManageUsers from "./pages/manage/users/ManageUsers";
+// orders pages
+import ManageOrders from "./pages/manage/ManageOrders";
 
 // Loaders
 import productsLoader from "./loaders/productsLoader";
-import ProductDetailsLoader from "./loaders/productDetailsLoader";
+import productDetailsLoader from "./loaders/productDetailsLoader";
+import usersLoader from "./loaders/usersLoader";
 
 // Actions
 import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
+import addProductAction from "./actions/addProductAction";
 
 // Errors
 import ProductDetailsError from "./errors/ProductDetailsError";
@@ -56,23 +62,24 @@ export const router = createBrowserRouter(
 					path=":id"
 					element={<ProductDetails />}
 					errorElement={ <ProductDetailsError /> }
-					loader={ ProductDetailsLoader }
+					loader={ productDetailsLoader }
 				/>
 			</Route>
 
 			<Route path="manage">
-				<Route
-					path="products"
-					element={<ManageProducts />}
-					// loader={ ManageProductsLoader }
-				>
+				<Route path="products">	
+					<Route index
+						element={<ManageProducts />}
+						loader={ productsLoader }
+					/>
+					<Route path="add" element={<AddProduct />} action={ addProductAction }/>
 					{/* <Route
 						path=":id"
 						element={<ManageProductDetails />}
 						loader={ ManageProductDetailsLoader }
 					/> */}
 				</Route>
-		
+
 				<Route
 					path="orders"
 					element={<ManageOrders />}
@@ -85,11 +92,8 @@ export const router = createBrowserRouter(
 					/> */}
 				</Route>
 
-				<Route
-					path="users"
-					element={<ManageUsers />}
-					// loader={ ManageUsersLoader }
-				>
+				<Route path="users">
+					<Route index element={<ManageUsers />} loader={ usersLoader }/>
 					{/* <Route
 						path=":id"
 						element={<ManageUserDetails />}

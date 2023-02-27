@@ -28,7 +28,7 @@ export const RootLayout = () => {
 	}, []);
 
 	useEffect(() => {
-		setShow(data && data.error);
+		setShow(data && data.message);
 	}, [data]);
 
 	const onSignOutButtonClick = (e) => {
@@ -48,19 +48,20 @@ export const RootLayout = () => {
 						<Nav className="me-auto">
 						{ user && user.isAdmin ? (
 							<>
-							<Nav.Link as={ Link } to="manage/products">Manage Products</Nav.Link>
-							<Nav.Link as={ Link } to="manage/orders">Manage Orders</Nav.Link>
-							<Nav.Link as={ Link } to="manage/users">Manage Users</Nav.Link>
+							<Nav.Link as={ Link } to="manage/products">商品管理</Nav.Link>
+							<Nav.Link as={ Link } to="manage/orders">訂單管理</Nav.Link>
+							<Nav.Link as={ Link } to="manage/users">會員管理</Nav.Link>
+							<Nav.Link as={ Link } to="statistics">統計</Nav.Link>
 							</>
 						) : (
-							<Nav.Link as={ Link } to="products">Products</Nav.Link>
+							<Nav.Link as={ Link } to="products">商品</Nav.Link>
 						)}
 						</Nav>
 						<Nav>
 							<Nav.Link as={ Link } to="cart">Cart</Nav.Link>
 							{ user ? (
 								<>
-								<Nav.Link as={ Link } onClick={ onSignOutButtonClick }>Sign Out</Nav.Link>
+								<Nav.Link as={ Link } onClick={ onSignOutButtonClick }>登出</Nav.Link>
 								</>
 							) : (
 								<>
@@ -79,7 +80,7 @@ export const RootLayout = () => {
 						onClose={ () => setShow(false) }
 						className="mt-3"
 						dismissible>
-						{ data.error }
+						{ data.message }
 					</Alert>}
 				<Outlet />
 			</Container>
