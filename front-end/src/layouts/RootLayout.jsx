@@ -6,8 +6,10 @@ import {
 	useNavigate,
 } from "react-router-dom";
 import { Alert, Container, Nav, Navbar } from "react-bootstrap";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { auth } from "../firebase";
+
 
 export const RootLayout = () => {
 	const [ user, setUser ] = useState(null);
@@ -16,13 +18,22 @@ export const RootLayout = () => {
 	const data = useActionData();
 	
 	useEffect(() => {
-		const auth = getAuth();
 		return onAuthStateChanged(auth, user => {
-			if (!user) return setUser(null);
+			if (!user) {
+				setUser(null);
+				localStorage.removeItem('user');
+				return null;
+			}
 
 			const db = getFirestore();
 			getDoc(doc(db, 'users', user.uid)).then(docSnap => {
-				if (docSnap.exists()) setUser(docSnap.data());
+				if (docSnap.exists()) {
+					setUser(docSnap.data());
+					localStorage.setItem('user', JSON.stringify({
+						...docSnap.data(),
+						id: user.uid,
+					}));
+				}
 			});
 		});
 	}, []);
@@ -32,7 +43,6 @@ export const RootLayout = () => {
 	}, [data]);
 
 	const onSignOutButtonClick = (e) => {
-		const auth = getAuth();
 		auth.signOut().then(() => {
 			navigate('/');
 		});
@@ -61,6 +71,7 @@ export const RootLayout = () => {
 							<Nav.Link as={ Link } to="cart">Cart</Nav.Link>
 							{ user ? (
 								<>
+								<Nav.Link as={ Link } to="profile">會員中心</Nav.Link>
 								<Nav.Link as={ Link } onClick={ onSignOutButtonClick }>登出</Nav.Link>
 								</>
 							) : (
@@ -81,7 +92,7 @@ export const RootLayout = () => {
 						className="mt-3"
 						dismissible>
 						{ data.message }
-					</Alert>}
+					</Alert> }
 				<Outlet />
 			</Container>
 		</div>

@@ -9,7 +9,7 @@ export const ManageProducts = () => {
 
     const products = useLoaderData();
     const tableColumns = [
-        { key: '-', label: '' },
+        { key: '-', label: '選取' },
         { key: 'name', label: '名稱' },
         { key: 'price', label: '價格' },
         { key: 'countInStock', label: '庫存' },

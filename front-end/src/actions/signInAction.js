@@ -27,7 +27,7 @@ export const signInAction = async ({ request }) => {
         }
     });
 
-    if (userCredential.error) return userCredential;
+    if (userCredential.message) return userCredential;
     
     return redirect('/');
 };

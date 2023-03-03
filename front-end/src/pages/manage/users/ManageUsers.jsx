@@ -9,7 +9,7 @@ export const ManageUsers = () => {
     
     const users = useLoaderData();
     const tableColumns = [
-        { key: '-', label: '' },
+        { key: '-', label: '選取' },
         { key: 'email', label: '電郵' },
         { key: 'phoneNumber', label: '電話' },
         { key: 'emailVerified', label: '已驗證' },

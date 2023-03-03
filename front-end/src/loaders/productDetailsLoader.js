@@ -1,4 +1,3 @@
-import { fetchProductDetails } from "../firebase";
 
 export const productDetailsLoader = async ({ params }) => {
     const { id } = params
