@@ -13,8 +13,8 @@ export const ManageProducts = () => {
         { key: 'name', label: '名稱' },
         { key: 'price', label: '價格' },
         { key: 'countInStock', label: '庫存' },
+        { key: 'isEnabled', label: '已上架' },
         { key: '/', label: ''},
-        // { key: 'actions', label: '操作' },
     ];
 
     return (

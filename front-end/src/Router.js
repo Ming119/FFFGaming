@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
 import ManageProducts from "./pages/manage/products/ManageProducts";
+import ManageProductDetails from "./pages/manage/products/ManageProductDetails";
 import AddProduct from "./pages/manage/products/AddProduct";
 // users pages
 import ManageUsers from "./pages/manage/users/ManageUsers";
@@ -35,6 +36,7 @@ import userDetailsLoader from "./loaders/userDetailsLoader";
 import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
 import addProductAction from "./actions/addProductAction";
+import updateProductAction from "./actions/updateProductAction";
 
 // Errors
 import ProductDetailsError from "./errors/ProductDetailsError";
@@ -61,7 +63,6 @@ export const router = createBrowserRouter(
 					element={<Products />}
 					loader={ productsLoader }
 				/>
-
 				<Route
 					path=":id"
 					element={<ProductDetails />}
@@ -77,11 +78,12 @@ export const router = createBrowserRouter(
 						loader={ productsLoader }
 					/>
 					<Route path="add" element={<AddProduct />} action={ addProductAction }/>
-					{/* <Route
+					<Route
 						path=":id"
 						element={<ManageProductDetails />}
-						loader={ ManageProductDetailsLoader }
-					/> */}
+						loader={ productDetailsLoader }
+						action={ updateProductAction }
+					/>
 				</Route>
 
 				<Route

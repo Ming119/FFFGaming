@@ -1,14 +1,14 @@
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 export const productDetailsLoader = async ({ params }) => {
-    const { id } = params
-    return { id, name: "Product Name", price: 100, description: "Product Description" };
-    
-    // const productDetails = await fetchProductDetails(id);
+    const { id } = params;
 
-    // if (!productDetails)
-    //     throw Error("Unable to load product details");
-
-    // return productDetails;
+    const db = getFirestore();
+    const productSnapshot = await getDoc(doc(db, "products", id));
+    return {
+        id,
+        ...productSnapshot.data(),
+    };
 };
 
 export default productDetailsLoader;

@@ -8,7 +8,10 @@ export const userDetailsLoader = async ({ params }) => {
     const db = getFirestore();
     const userDoc = await getDoc(doc(db, "users", id));
     
-    return userDoc.data();
+    return {
+        id,
+        ...userDoc.data(),
+    };
 };
 
 export default userDetailsLoader;
