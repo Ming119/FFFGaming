@@ -3,6 +3,7 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Google } from 'react-bootstrap-icons';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { FloatingLabel } from '../components/FloatingLabel';
 
 export const SignIn = () => {
     const navigate = useNavigate();
@@ -31,56 +32,34 @@ export const SignIn = () => {
 
             navigate('/');
         }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            const email = error.email;
-            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(error);
         });
     };
 
     return (
-        <div className="sign-in">
-        <Row>
-        <Col />
+    <div className="sign-in"><Row className='my-5'><Col xs={3} />
         <Col xs={6}>
-        <Card className="text-center my-5">
-        <Card.Body>
-            <Card.Title className='my-3'><b>登入</b></Card.Title>
-            <Form method="POST">
-                <div className='form-floating my-3'>
-                    <input className="form-control"
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Email" />
-                    <label htmlFor="email">電子郵件</label>
-                </div>
-                
-                <div className='form-floating my-3'>
-                    <input className="form-control"
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="Password" />
-                    <label htmlFor="password">密碼</label>
-                </div>
+            <Card className="text-center">
+                <Card.Body>
+                    <Card.Title className='my-3'><b>登入</b></Card.Title>
+                    <Form method="POST">
+                        <FloatingLabel type="email" id="email" name="email" label="電子郵件" />
+                        <FloatingLabel type="password" id="password" name="password" label="密碼" />
+                        <Button className="my-3" type='submit'>登入</Button>
+                    </Form>
 
-                <Button className="my-3" type='submit'>登入</Button>
-            </Form>
+                    <Card.Link as={Link} to="/signup" className="link-secondary">註冊</Card.Link>
+                    <Card.Link as={Link} to="/forgotpassword" className="link-secondary">忘記密碼</Card.Link>
 
-            <Card.Link as={Link} to="/signup" className="link-secondary">註冊</Card.Link>
-            <Card.Link as={Link} to="/forgotpassword" className="link-secondary">忘記密碼</Card.Link>
-
-            <hr />
-            <Button variant="outline-link" size="lg"
-                onClick={ handleSignInWithGoogle }><Google />
-            </Button>
-        </Card.Body>
-        </Card>
+                    <hr />
+                    
+                    <Button variant="outline-link" size="lg"
+                        onClick={ handleSignInWithGoogle }><Google />
+                    </Button>
+                </Card.Body>
+            </Card>
         </Col>
-        <Col />
-        </Row>
-        </div>
+    <Col xs={3} /></Row></div>
     );
 }
 

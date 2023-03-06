@@ -12,8 +12,10 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+//Profile pages
+import Profile from "./pages/profile/Profile";
+import EditProfile from "./pages/profile/EditProfile";
 // products pages
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
@@ -48,42 +50,42 @@ export const router = createBrowserRouter(
 			<Route path="cart" element={<Cart />} />
 			<Route path="signin"
 				element={<SignIn />}
-				action={ signInAction }
-			/>
+				action={ signInAction } />
 			<Route path="signup"
 				element={<SignUp />}
-				action={ signUpAction }
-			/>
-			<Route path="profile"
-				element={<Profile />}
-				loader={ userDetailsLoader } />
+				action={ signUpAction } />
+
+			<Route path="profile">
+				<Route index
+					element={<Profile />}
+					loader={ userDetailsLoader } />
+				<Route path="edit"
+					element={<EditProfile />}
+					loader={ userDetailsLoader } />
+			</Route>
 
 			<Route path="products">
 				<Route index
 					element={<Products />}
-					loader={ productsLoader }
-				/>
+					loader={ productsLoader } />
 				<Route
 					path=":id"
 					element={<ProductDetails />}
 					errorElement={ <ProductDetailsError /> }
-					loader={ productDetailsLoader }
-				/>
+					loader={ productDetailsLoader } />
 			</Route>
 
 			<Route path="manage">
 				<Route path="products">	
 					<Route index
 						element={<ManageProducts />}
-						loader={ productsLoader }
-					/>
+						loader={ productsLoader } />
 					<Route path="add" element={<AddProduct />} action={ addProductAction }/>
 					<Route
 						path=":id"
 						element={<ManageProductDetails />}
 						loader={ productDetailsLoader }
-						action={ updateProductAction }
-					/>
+						action={ updateProductAction } />
 				</Route>
 
 				<Route
@@ -99,12 +101,11 @@ export const router = createBrowserRouter(
 				</Route>
 
 				<Route path="users">
-					<Route index element={<ManageUsers />} loader={ usersLoader }/>
+					<Route index element={<ManageUsers />} loader={ usersLoader } />
 					<Route
 						path=":id"
 						element={<ManageUserDetails />}
-						laaader={ userDetailsLoader }
-					/>
+						laaader={ userDetailsLoader } />
 				</Route>
 			</Route>
 			

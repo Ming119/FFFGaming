@@ -18,23 +18,17 @@ export const ManageProducts = () => {
     ];
 
     return (
-        <div className="manage-products">
-            <Row className="my-3">
-                <Col xs={ 2 } />
-                <Col className="text-center">
-                    <h1><b>商品管理</b></h1>
-                </Col>
-                <Col xs={ 2 }>
-                    <Button as={ Link } to="add">新增商品</Button>
-                </Col>
+    <div className="manage-products">
+        <Row className="my-3">
+            <Col xs={2} />
+            <Col xs={8} className="text-center fs-1 fw-bold">商品管理</Col>
+            <Col xs={2}><Button as={ Link } to="add">新增商品</Button></Col>
+        </Row>
 
-            </Row>
-
-            <Table tableColumns={ tableColumns }
-                tableData={ products }
-                setSelected={ setSelectedProducts }></Table>
-
-        </div>
+        <Table tableColumns={ tableColumns }
+            tableData={ products }
+            setSelected={ setSelectedProducts } />
+    </div>
     );
 };
 

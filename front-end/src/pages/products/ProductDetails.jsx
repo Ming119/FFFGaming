@@ -7,25 +7,26 @@ export const ProductDetails = () => {
     const productDetails = useLoaderData();
     
     return (
-        <div className="product-details">
-            <Button variant="outline-primary" size="sm"
-                as={ Link } to=".." className="my-3">
-                <CaretLeftFill />返回
-            </Button>
+    <div className="product-details">
+        <Button variant="outline-primary" size="sm" as={ Link } to=".." className="my-3">
+            <CaretLeftFill />返回
+        </Button>
 
-            <Row className="my-3">
-                <Col sm={12} md={6}>
-                    <Image src={ productDetails.image } alt={ productDetails.name } fluid />
-                </Col>
-                <Col sm={12} md={6}>
-                    <h1>{ productDetails.name }</h1>
-                    <p>{ `價格：$${productDetails.price}` }</p>
-                    <p>{ `庫存：${productDetails.countInStock}` }</p>
-                </Col>
-            </Row>
-            <hr />
-            <p>{ productDetails.description }</p>
-        </div>
+        <Row className="my-3">
+            <Col sm={12} md={6}>
+                <Image src={ productDetails.image } alt={ productDetails.name } fluid />
+            </Col>
+            <Col sm={12} md={6}>
+                <h1>{ productDetails.name }</h1>
+                <p>{ `價格：$${productDetails.price}` }</p>
+                <p>{ `庫存：${productDetails.countInStock}` }</p>
+            </Col>
+        </Row>
+
+        <hr />
+
+        <p>{ productDetails.description }</p>
+    </div>
     );
 };
 

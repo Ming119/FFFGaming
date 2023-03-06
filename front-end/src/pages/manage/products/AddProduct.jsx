@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Link } from 'react-router-dom';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { CaretLeftFill } from 'react-bootstrap-icons';
+import { FloatingLabel } from '../../../components/FloatingLabel';
 
 export const AddProduct = () => {
 
@@ -19,7 +20,7 @@ export const AddProduct = () => {
     };
 
     useEffect(() => {
-        let fileDataURLReader, fileBytesReader, isCancel = false;
+        let fileDataURLReader, isCancel = false;
         if (file) {
             fileDataURLReader = new FileReader();
 
@@ -36,74 +37,49 @@ export const AddProduct = () => {
         return () => {
             isCancel = true;
             if (fileDataURLReader && fileDataURLReader.readyState === 1) fileDataURLReader.abort();
-            if (fileBytesReader && fileBytesReader.readyState === 1) fileBytesReader.abort();
         }
     }, [file]);
     
     return (
-        <div className="add-product">
-            <Row className="my-3">
-                <Col xs={ 1 }>
-                    <Button variant="outline-primary" size="sm"
-                        as={ Link } to="..">
-                        <CaretLeftFill />返回
-                    </Button>
-                </Col>
+    <div className="add-product">
+        <Row className="my-3">
+            <Col xs={1}>
+                <Button variant="outline-primary" size="sm" as={ Link } to="..">
+                    <CaretLeftFill />返回
+                </Button>
+            </Col>
+            <Col className="text-center"><h1><b>新增商品</b></h1></Col>
+            <Col xs={1} />
+        </Row>
 
-                <Col className="text-center"><h1><b>新增商品</b></h1></Col>
-                <Col xs={ 1 } />
-            </Row>
+        <Card>
+            <Card.Body>
+                <Form method='POST'>
+                    <Row className='my-3'>
+                        <Col><FloatingLabel type="text" name="productName" id="productName" label="商品名稱" /></Col>
+                        <Col><FloatingLabel type="number" name="price" id="price" label="價格" /></Col>
+                        <Col> <FloatingLabel type="number" name="countInStock" id="countInStock" label="庫存" /></Col>
+                    </Row>
 
-            <Card>
-                <Card.Body>
-                    <Form method='POST'>
-                        <Row className='my-3'>
-                            <Col><div className='form-floating'>
-                                <input type="text" className="form-control" 
-                                    name="productName" id="productName"
-                                    placeholder='商品名稱' />
-                                <label htmlFor="productName">商品名稱</label>
-                            </div></Col>
+                    <Row className='my-3'>
+                        <FloatingLabel type="text" name="description" id="description" label="說明" textarea />
+                    </Row>
 
-                            <Col><div className='form-floating'>
-                                <input type="number" className="form-control" 
-                                    name="price" id="price"
-                                    placeholder='價格' />
-                                <label htmlFor="price">價格</label>
-                            </div></Col>
+                    <Row className='my-3 mx-auto'>
+                        <label className="form-label" htmlFor="image">圖片</label>
+                        <input type="file" className="form-control"
+                            name="image" id="image" accept="image/*"
+                            onChange={ handleImageChange } />
+                    </Row>
 
-                            <Col><div className='form-floating'>
-                                <input type="number" className="form-control" 
-                                    name="countInStock" id="countInStock"
-                                    placeholder='庫存' />
-                                <label htmlFor="countInStock">庫存</label>
-                            </div></Col>
-                        </Row>
+                    <Row className='mx-auto my-3'><Button type='submit'>新增</Button></Row>
+                </Form>
+            </Card.Body>
 
-                        <Row><div className='form-floating'>
-                            <textarea className="form-control"
-                                name="description" id="description"
-                                placeholder='說明' />
-                            <label htmlFor="description">說明</label>
-                        </div></Row>
-
-                        <Row><div className='my-3'>
-                            <label className="form-label" htmlFor="image">圖片</label>
-                            <input type="file" className="form-control"
-                                name="image" id="image" accept="image/*"
-                                onChange={ handleImageChange } />
-                        </div></Row>
-
-                        <Row className='mx-auto my-3'>
-                            <Button type='submit'>新增</Button>
-                        </Row>
-                    </Form>
-                </Card.Body>
-
-                { fileDataURL ?
-                <Card.Img src={ fileDataURL } /> : null }
-            </Card>
-        </div>
+            { fileDataURL ?
+            <Card.Img src={ fileDataURL } /> : null }
+        </Card>
+    </div>
     );
 };
 

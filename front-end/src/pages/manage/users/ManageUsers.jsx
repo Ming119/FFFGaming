@@ -26,18 +26,17 @@ export const ManageUsers = () => {
     }, [selectedUsers]);
 
     return (
-        <div className="manage-users">
-            <Row className="my-3">
-                <Col xs={ 2 } />
-                <Col className="text-center"><h1><b>會員管理</b></h1></Col>
-                <Col xs={ 2 } />
-            </Row>
+    <div className="manage-users">
+        <Row className="my-3">
+            <Col xs={2} />
+            <Col xs={8} className="text-center fs-1 fw-bold">會員管理</Col>
+            <Col xs={2} />
+        </Row>
 
-            <Table tableColumns={ tableColumns }
-                tableData={ users }
-                setSelected={ setSelectedUsers }
-            />
-        </div>
+        <Table tableColumns={ tableColumns }
+            tableData={ users }
+            setSelected={ setSelectedUsers } />
+    </div>
     );
 };
 

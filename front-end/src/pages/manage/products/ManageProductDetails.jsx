@@ -3,6 +3,7 @@ import { Form, Link, useLoaderData, useParams, useNavigate } from 'react-router-
 import { Button, ButtonGroup, Card, Row, Col } from 'react-bootstrap';
 import { CaretLeftFill } from 'react-bootstrap-icons';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { FloatingLabel } from '../../../components/FloatingLabel';
 
 export const ManageProductDetails = () => {
 
@@ -37,7 +38,7 @@ export const ManageProductDetails = () => {
     };
 
     useEffect(() => {
-        let fileDataURLReader, fileBytesReader, isCancel = false;
+        let fileDataURLReader, isCancel = false;
         if (file) {
             fileDataURLReader = new FileReader();
   
@@ -54,78 +55,58 @@ export const ManageProductDetails = () => {
         return () => {
             isCancel = true;
             if (fileDataURLReader && fileDataURLReader.readyState === 1) fileDataURLReader.abort();
-            if (fileBytesReader && fileBytesReader.readyState === 1) fileBytesReader.abort();
       }
     }, [file]);
 
     return (
-        <div className="manage-product-details">
-            <Button variant="outline-primary" size="sm"
-                as={ Link } to=".." className='my-3'>
-                <CaretLeftFill />返回
-            </Button>
+    <div className="manage-product-details">
+        <Button variant="outline-primary" size="sm" as={ Link } to=".." className='my-3'>
+            <CaretLeftFill />返回
+        </Button>
 
-            <Card>
-                <Card.Body>
-                    <Form method='POST'>
-                        <input type="hidden" name="id" value={ id } />
-                        <Row className='my-3'>
-                            <Col><div className='form-floating'>
-                                <input type="text" className="form-control" 
-                                    name="productName" id="productName"
-                                    placeholder='商品名稱' value={ productName }
-                                    onChange={ (e) => setProductName(e.target.value) } />
-                                <label htmlFor="productName">商品名稱</label>
-                            </div></Col>
+        <Card>
+            <Card.Body>
+                <Form method='POST'>
+                    <input type="hidden" name="id" value={ id } />
+                    <Row className='my-3'>
+                        <Col><FloatingLabel type="text" name="productName" id="productName" value={ productName }
+                            label="商品名稱" onChange={ (e) => setProductName(e.target.value) }/></Col>
 
-                            <Col><div className='form-floating'>
-                                <input type="number" className="form-control" 
-                                    name="price" id="price"
-                                    placeholder='價格' value={ price }
-                                    onChange={ (e) => setPrice(e.target.value) } />
-                                <label htmlFor="price">價格</label>
-                            </div></Col>
+                        <Col><FloatingLabel type="number" name="price" id="price" value={ price }
+                            label="價格" onChange={ (e) => setPrice(e.target.value) }/></Col>
 
-                            <Col><div className='form-floating'>
-                                <input type="number" className="form-control" 
-                                    name="countInStock" id="countInStock"
-                                    placeholder='庫存' value={ countInStock }
-                                    onChange={ (e) => setCountInStock(e.target.value) } />
-                                <label htmlFor="countInStock">庫存</label>
-                            </div></Col>
-                        </Row>
+                        <Col><FloatingLabel type="number" name="countInStock" id="countInStock" value={ countInStock }
+                            label="庫存" onChange={ (e) => setCountInStock(e.target.value) }/></Col>
+                    </Row>
 
-                        <Row><div className='form-floating'>
-                            <textarea className="form-control"
-                                name="description" id="description"
-                                placeholder='說明' value={ description }
-                                onChange={ (e) => setDescription(e.target.value) } />
-                            <label htmlFor="description">說明</label>
-                        </div></Row>
+                    <Row classname="my-3">
+                        <FloatingLabel type="text" name="description" id="description" value={ description }
+                            label="說明" onChange={ (e) => setDescription(e.target.value) }
+                            textarea />
+                    </Row>
 
-                        <Row><div className='my-3'>
-                            <label className="form-label" htmlFor="image">圖片</label>
-                            <input type="file" className="form-control"
-                                name="image" id="image" accept="image/*" 
-                                onChange={ handleImageChange }/>
-                        </div></Row>
+                    <Row className="mx-auto my-3">
+                        <label className="form-label" htmlFor='image'>圖片</label>
+                        <input className="form-control" type="file" name="image" id="image"
+                            onChange={ handleImageChange } />
+                    </Row>
 
-                        <Row className='mx-auto my-3'>
-                            <ButtonGroup>
-                                <Button variant='warning' type='submit'>更新</Button>
-                                { product.isEnabled ?
-                                    <Button variant='danger' onClick={ handleButtonClick }>下架</Button>
-                                    : <Button variant='success' onClick={ handleButtonClick }>上架</Button>
-                                }
-                            </ButtonGroup>
-                        </Row>
-                    </Form>
-                </Card.Body>
+                    <Row className='mx-auto my-3'>
+                        <ButtonGroup>
+                            <Button variant='warning' type='submit'>更新</Button>
+                            { product.isEnabled ?
+                                <Button variant='danger' onClick={ handleButtonClick }>下架</Button>
+                                : <Button variant='success' onClick={ handleButtonClick }>上架</Button>
+                            }
+                        </ButtonGroup>
+                    </Row>
+                </Form>
+            </Card.Body>
 
-                { imageDataURL ?
-                <Card.Img src={ imageDataURL } /> : null }
-            </Card>
-        </div>
+            { imageDataURL ?
+            <Card.Img src={ imageDataURL } /> : null }
+        </Card>
+    </div>
     );
 };
 
