@@ -54,15 +54,14 @@ export const RootLayout = () => {
 				<Navbar.Toggle aria-controls="navbar-nav" />
 				<Navbar.Collapse id="navbar-nav">
 					<Nav className="me-auto">
-					{ user && user.isAdmin ? (
+					<Nav.Link as={ Link } to="products">商品</Nav.Link>
+					{ user && user.isAdmin && (
 						<>
 						<Nav.Link as={ Link } to="manage/products">商品管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/orders">訂單管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/users">會員管理</Nav.Link>
 						<Nav.Link as={ Link } to="statistics">統計</Nav.Link>
 						</>
-					) : (
-						<Nav.Link as={ Link } to="products">商品</Nav.Link>
 					)}
 					</Nav>
 					<Nav>

@@ -6,6 +6,7 @@ import {
 
 // Layouts
 import RootLayout from "./layouts/RootLayout";
+import ManageUserLayout from "./layouts/ManageUserLayout";
 
 // Pages
 import Home from "./pages/Home";
@@ -96,16 +97,16 @@ export const router = createBrowserRouter(
 					{/* <Route
 						path=":id"
 						element={<ManageOrderDetails />}
-						laaader={ ManageOrderDetailsLoader }
+						loader={ ManageOrderDetailsLoader }
 					/> */}
 				</Route>
 
-				<Route path="users">
+				<Route path="users" element={<ManageUserLayout />}>
 					<Route index element={<ManageUsers />} loader={ usersLoader } />
 					<Route
 						path=":id"
 						element={<ManageUserDetails />}
-						laaader={ userDetailsLoader } />
+						loader={ userDetailsLoader } />
 				</Route>
 			</Route>
 			

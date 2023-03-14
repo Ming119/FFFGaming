@@ -3,42 +3,65 @@ import { Form, Link } from 'react-router-dom';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { CaretLeftFill } from 'react-bootstrap-icons';
 import { FloatingLabel } from '../../../components/FloatingLabel';
+import { Carousel } from 'react-bootstrap';
 
 export const AddProduct = () => {
 
-    const [ file, setFile ] = useState(null);
-    const [ fileDataURL, setFileDataURL ] = useState(null);
+    const [ files, setFiles ] = useState([]);
+    const [ filesDataURL, setFilesDataURL ] = useState([]);
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
+        const files = e.target.files;
 
-        if (!file.type.match(/image\/(png|jpg|jpeg)/i)) {
-            alert('請上傳圖片檔案');
-            return;
+        for (let i = 0; i < files.length; i++) {
+            if (!files[i].type.match(/image\/(png|jpg|jpeg)/i)) {
+                alert('請上傳圖片檔案');
+                return;
+            }
         }
-        setFile(file);
+
+        setFiles(files);
     };
+
+    const showImages = () => {
+        const images = [];
+        for (let i = 0; i < files.length; i++) {
+            images.push(
+                <Carousel.Item key={i}>
+                    <img src={filesDataURL[i]} className="w-100" />
+                </Carousel.Item>
+            );
+        }
+        return images;
+    }
 
     useEffect(() => {
         let fileDataURLReader, isCancel = false;
-        if (file) {
-            fileDataURLReader = new FileReader();
+        if (files) {
+            const readFiles = (index) => {
+                if (index >= files.length) return;
 
-            fileDataURLReader.onload = (e) => {
-                if (!isCancel) {
-                    setFileDataURL(e.target.result);
-                    sessionStorage.setItem('imageDataURL', e.target.result);
-                }
-            };
+                fileDataURLReader = new FileReader();
+                fileDataURLReader.onload = (e) => {
+                    if (!isCancel) {
+                        setFilesDataURL(prev => [...prev, e.target.result]);
+                        sessionStorage.setItem(`imageDataURL_${index}`, e.target.result);
+                    }
+                };
 
-            fileDataURLReader.readAsDataURL(file);
+                fileDataURLReader.readAsDataURL(files[index]);
+                readFiles(index + 1);
+            }
+            
+            readFiles(0);
+            sessionStorage.setItem('imagesLength', files.length);
         }
     
         return () => {
             isCancel = true;
             if (fileDataURLReader && fileDataURLReader.readyState === 1) fileDataURLReader.abort();
         }
-    }, [file]);
+    }, [files]);
     
     return (
     <div className="add-product">
@@ -48,7 +71,7 @@ export const AddProduct = () => {
                     <CaretLeftFill />返回
                 </Button>
             </Col>
-            <Col className="text-center"><h1><b>新增商品</b></h1></Col>
+            <Col className="text-center fs-1 fw-bold">新增商品</Col>
             <Col xs={1} />
         </Row>
 
@@ -69,15 +92,16 @@ export const AddProduct = () => {
                         <label className="form-label" htmlFor="image">圖片</label>
                         <input type="file" className="form-control"
                             name="image" id="image" accept="image/*"
-                            onChange={ handleImageChange } />
+                            onChange={ handleImageChange } multiple />
                     </Row>
 
                     <Row className='mx-auto my-3'><Button type='submit'>新增</Button></Row>
                 </Form>
             </Card.Body>
 
-            { fileDataURL ?
-            <Card.Img src={ fileDataURL } /> : null }
+            { filesDataURL && (
+                <Carousel>{ showImages() }</Carousel>
+            )}
         </Card>
     </div>
     );
