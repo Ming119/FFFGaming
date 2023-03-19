@@ -41,7 +41,7 @@ export const SignIn = () => {
         <Col xs={6}>
             <Card className="text-center">
                 <Card.Body>
-                    <Card.Title className='my-3'><b>登入</b></Card.Title>
+                    <Card.Title className='my-3 fw-bold'>登入</Card.Title>
                     <Form method="POST">
                         <FloatingLabel type="email" id="email" name="email" label="電子郵件" />
                         <FloatingLabel type="password" id="password" name="password" label="密碼" />
@@ -49,7 +49,7 @@ export const SignIn = () => {
                     </Form>
 
                     <Card.Link as={Link} to="/signup" className="link-secondary">註冊</Card.Link>
-                    <Card.Link as={Link} to="/forgotpassword" className="link-secondary">忘記密碼</Card.Link>
+                    <Card.Link as={Link} to="/forgetpassword" className="link-secondary">忘記密碼</Card.Link>
 
                     <hr />
                     

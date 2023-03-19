@@ -5,17 +5,17 @@ import {
 	useActionData,
 	useNavigate,
 } from "react-router-dom";
-import { Alert, Container, Nav, Navbar } from "react-bootstrap";
-import { onAuthStateChanged } from "firebase/auth";
+import { Alert, Button, Container, Nav, Navbar } from "react-bootstrap";
+import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { auth } from "../firebase";
-
+import logo from "../assets/logo.png";
 
 export const RootLayout = () => {
 	const [ user, setUser ] = useState(null);
 	const [ show, setShow ] = useState(false);
 	const navigate = useNavigate ();
-	const data = useActionData();
+	const [ data, setData ] = useState(useActionData());
 	
 	useEffect(() => {
 		return onAuthStateChanged(auth, user => {
@@ -33,6 +33,14 @@ export const RootLayout = () => {
 						...docSnap.data(),
 						id: user.uid,
 					}));
+
+					if (!docSnap.data().emailVerified) {
+						setData({
+							message: '請先驗證電子郵件。',
+							variant: 'warning',
+							linkMessage: '點擊此處驗證電子郵件。',
+						});
+					}
 				}
 			});
 		});
@@ -46,11 +54,22 @@ export const RootLayout = () => {
 		auth.signOut().then(() => navigate('/'));
 	};
 
+	const onAlertLinkClick = (e) => {
+		sendEmailVerification(auth.currentUser, {
+			url: `http://localhost:3000/emailVerification?id=${auth.currentUser.uid}`,
+		}).then(() => {
+			setData({
+				message: '已發送驗證電子郵件。',
+				variant: 'success',
+			});
+		});
+	}
+
 	return (
 	<div className="root-layout">
 		<Navbar bg="dark" variant="dark">
 			<Container>
-				<Navbar.Brand as={ Link } to="/">LOGO</Navbar.Brand>
+				<Navbar.Brand as={ Link } to="/" className="p-0"><img src={ logo } width="40" height="40" className="d-inline-block align-top" alt="logo" /></Navbar.Brand>
 				<Navbar.Toggle aria-controls="navbar-nav" />
 				<Navbar.Collapse id="navbar-nav">
 					<Nav className="me-auto">
@@ -83,12 +102,13 @@ export const RootLayout = () => {
 		</Navbar>
 
 		<Container>
-			{ data && show && <Alert
+			{ show && data && <Alert
 					variant={ data.variant }
 					onClose={ () => setShow(false) }
 					className="mt-3"
 					dismissible>
 					{ data.message }
+					<Alert.Link as={ Button } variant="link" onClick={ onAlertLinkClick }>{ data.linkMessage }</Alert.Link>
 				</Alert> }
 			<Outlet />
 		</Container>

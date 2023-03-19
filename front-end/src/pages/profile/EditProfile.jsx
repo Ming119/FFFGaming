@@ -15,7 +15,7 @@ export const EditProfile = () => {
         <Col xs={6}>
             <Card>
                 <Card.Body>
-                    <Card.Title className="text-center"><b>會員中心</b></Card.Title>
+                    <Card.Title className="text-center fw-bold">會員中心</Card.Title>
                     <Form method="POST">
                         <FloatingLabel type="text" name="displayName" id="displayName"
                             label="使用者名稱" value={ displayName }

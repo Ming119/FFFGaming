@@ -9,7 +9,7 @@ export const SignUp = () => {
 		<Col xs={6}>
 			<Card className="text-center">
 				<Card.Body>
-					<Card.Title className='my-3'><b>註冊</b></Card.Title>
+					<Card.Title className='my-3 fw-bold'>註冊</Card.Title>
 					<Form method="POST">
 						<FloatingLabel type="email" id="email" name="email" label="電子郵件" />
 						<FloatingLabel type="password" id="password" name="password" label="密碼" />

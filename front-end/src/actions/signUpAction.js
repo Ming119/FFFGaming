@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 
 export const signUpAction = async ({ request }) => {
@@ -45,6 +45,10 @@ export const signUpAction = async ({ request }) => {
         lastLoginAt: user.metadata.lastLoginAt,
         phoneNumber: user.phoneNumber,
         photoURL: user.photoURL,
+    });
+
+    await sendEmailVerification(user, {
+        url: `http://localhost:3000/emailVerification?id=${user.uid}`
     });
 
     return redirect('/');

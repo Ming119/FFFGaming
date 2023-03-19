@@ -14,15 +14,17 @@ import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
+import ForgetPassword from "./pages/ForgetPassword";
+import EmailVerification from "./pages/EmailVerification";
 //Profile pages
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
 // products pages
 import Products from "./pages/products/Products";
+import AddProduct from "./pages/manage/products/AddProduct";
 import ProductDetails from "./pages/products/ProductDetails";
 import ManageProducts from "./pages/manage/products/ManageProducts";
 import ManageProductDetails from "./pages/manage/products/ManageProductDetails";
-import AddProduct from "./pages/manage/products/AddProduct";
 // users pages
 import ManageUsers from "./pages/manage/users/ManageUsers";
 import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
@@ -30,16 +32,17 @@ import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 import ManageOrders from "./pages/manage/ManageOrders";
 
 // Loaders
-import productsLoader from "./loaders/productsLoader";
-import productDetailsLoader from "./loaders/productDetailsLoader";
 import usersLoader from "./loaders/usersLoader";
+import productsLoader from "./loaders/productsLoader";
 import userDetailsLoader from "./loaders/userDetailsLoader";
+import productDetailsLoader from "./loaders/productDetailsLoader";
 
 // Actions
 import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
 import addProductAction from "./actions/addProductAction";
 import updateProductAction from "./actions/updateProductAction";
+import resetPasswordAction from "./actions/resetPasswordAction";
 
 // Errors
 import ProductDetailsError from "./errors/ProductDetailsError";
@@ -55,7 +58,10 @@ export const router = createBrowserRouter(
 			<Route path="signup"
 				element={<SignUp />}
 				action={ signUpAction } />
-
+			<Route path="emailverification" element={<EmailVerification />} />
+			<Route path="forgetpassword"
+				element={<ForgetPassword />}
+				action={ resetPasswordAction } />
 			<Route path="profile">
 				<Route index
 					element={<Profile />}
