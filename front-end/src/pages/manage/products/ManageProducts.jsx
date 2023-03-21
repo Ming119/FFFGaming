@@ -1,20 +1,32 @@
-import { useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { Button, Col, Row } from "react-bootstrap";
-import { Table } from "../../../components/Table";
+import { DataGrid } from "@mui/x-data-grid";
 
 export const ManageProducts = () => {
-    
-    const [ selectedProducts, setSelectedProducts ] = useState([]);
 
     const products = useLoaderData();
     const tableColumns = [
-        { key: '-', label: '選取' },
-        { key: 'name', label: '名稱' },
-        { key: 'price', label: '價格' },
-        { key: 'countInStock', label: '庫存' },
-        { key: 'isEnabled', label: '已上架' },
-        { key: '/', label: ''},
+        {
+            field: 'name', headerName: '名稱', flex: 1,
+            valueGetter: (params) => {
+                return params.row.name || '未設定';
+            },
+        }, {
+            field: 'price', headerName: '價格', flex: 1,
+            valueGetter: (params) => {
+                return params.row.price || '未設定';
+            },
+        }, {
+            field: 'countInStock', headerName: '庫存', flex: 1,
+            valueGetter: (params) => {
+                return params.row.countInStock || '未設定';
+            },
+        }, {
+            field: 'isEnabled', headerName: '已上架', flex: 1,
+            valueGetter: (params) => {
+                return params.row.isEnabled ? '✔️' : '❌';
+            },
+        },
     ];
 
     return (
@@ -25,9 +37,13 @@ export const ManageProducts = () => {
             <Col xs={2}><Button as={ Link } to="add">新增商品</Button></Col>
         </Row>
 
-        <Table tableColumns={ tableColumns }
-            tableData={ products }
-            setSelected={ setSelectedProducts } />
+        <DataGrid autoHeight
+            rows={ products }
+            columns={ tableColumns }
+            pageSize={5}
+            rowsPerPageOptions={[1]}
+            checkboxSelection
+        />
     </div>
     );
 };

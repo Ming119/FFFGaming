@@ -6,7 +6,6 @@ import {
 
 // Layouts
 import RootLayout from "./layouts/RootLayout";
-import ManageUserLayout from "./layouts/ManageUserLayout";
 
 // Pages
 import Home from "./pages/Home";
@@ -26,6 +25,7 @@ import ProductDetails from "./pages/products/ProductDetails";
 import ManageProducts from "./pages/manage/products/ManageProducts";
 import ManageProductDetails from "./pages/manage/products/ManageProductDetails";
 // users pages
+import CreateUser from "./pages/manage/users/CreateUser";
 import ManageUsers from "./pages/manage/users/ManageUsers";
 import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 // orders pages
@@ -40,6 +40,8 @@ import productDetailsLoader from "./loaders/productDetailsLoader";
 // Actions
 import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
+import createUserAction from "./actions/createUserAction";
+import updateUserAction from "./actions/updateUserAction";
 import addProductAction from "./actions/addProductAction";
 import updateProductAction from "./actions/updateProductAction";
 import resetPasswordAction from "./actions/resetPasswordAction";
@@ -107,12 +109,14 @@ export const router = createBrowserRouter(
 					/> */}
 				</Route>
 
-				<Route path="users" element={<ManageUserLayout />}>
+				<Route path="users">
 					<Route index element={<ManageUsers />} loader={ usersLoader } />
+					<Route path="create" element={<CreateUser />} action={ createUserAction } />
 					<Route
 						path=":id"
 						element={<ManageUserDetails />}
-						loader={ userDetailsLoader } />
+						loader={ userDetailsLoader }
+						action={ updateUserAction } />
 				</Route>
 			</Route>
 			

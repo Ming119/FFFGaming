@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-	Link,
-	Outlet,
-	useActionData,
-	useNavigate,
-} from "react-router-dom";
+import { Link, Outlet, useActionData, useNavigate,} from "react-router-dom";
 import { Alert, Button, Container, Nav, Navbar } from "react-bootstrap";
 import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
@@ -12,11 +7,15 @@ import { auth } from "../firebase";
 import logo from "../assets/logo.png";
 
 export const RootLayout = () => {
-	const [ user, setUser ] = useState(null);
-	const [ show, setShow ] = useState(false);
 	const navigate = useNavigate ();
-	const [ data, setData ] = useState(useActionData());
-	
+	const actionData = useActionData();
+	const [ user, setUser ] = useState(null);
+	const [ data, setData ] = useState(actionData);
+
+	useEffect(() => {
+		setData(actionData);
+	}, [actionData]);
+
 	useEffect(() => {
 		return onAuthStateChanged(auth, user => {
 			if (!user) {
@@ -39,6 +38,16 @@ export const RootLayout = () => {
 							message: '請先驗證電子郵件。',
 							variant: 'warning',
 							linkMessage: '點擊此處驗證電子郵件。',
+							onLinkClick: () => {
+								sendEmailVerification(auth.currentUser, {
+									url: `http://localhost:3000/emailVerification?id=${auth.currentUser.uid}`,
+								}).then(() => {
+									setData({
+										message: '已發送驗證電子郵件。',
+										variant: 'success',
+									});
+								});
+							}
 						});
 					}
 				}
@@ -46,24 +55,9 @@ export const RootLayout = () => {
 		});
 	}, []);
 
-	useEffect(() => {
-		setShow(data && data.message && data.variant);
-	}, [data]);
-
 	const onSignOutButtonClick = (e) => {
 		auth.signOut().then(() => navigate('/'));
 	};
-
-	const onAlertLinkClick = (e) => {
-		sendEmailVerification(auth.currentUser, {
-			url: `http://localhost:3000/emailVerification?id=${auth.currentUser.uid}`,
-		}).then(() => {
-			setData({
-				message: '已發送驗證電子郵件。',
-				variant: 'success',
-			});
-		});
-	}
 
 	return (
 	<div className="root-layout">
@@ -102,13 +96,13 @@ export const RootLayout = () => {
 		</Navbar>
 
 		<Container>
-			{ show && data && <Alert
+			{ data && <Alert
 					variant={ data.variant }
-					onClose={ () => setShow(false) }
+					onClose={ () => setData(false) }
 					className="mt-3"
 					dismissible>
 					{ data.message }
-					<Alert.Link as={ Button } variant="link" onClick={ onAlertLinkClick }>{ data.linkMessage }</Alert.Link>
+					<Alert.Link as={ Button } variant="link" onClick={ data.onLinkClick }>{ data.linkMessage }</Alert.Link>
 				</Alert> }
 			<Outlet />
 		</Container>

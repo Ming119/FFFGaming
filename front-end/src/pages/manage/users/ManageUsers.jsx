@@ -1,35 +1,109 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { DataGrid } from '@mui/x-data-grid';
 import { useLoaderData } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
-import { Table } from "../../../components/Table";
+import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 
 export const ManageUsers = () => {
     
-    const [ selectedUsers, setSelectedUsers ] = useState([]);
+    const [ rowSelection, setRowSelection ] = useState([]);
+    const [ users, setUsers ] = useState(useLoaderData());
     
-    const users = useLoaderData();
+    useEffect(() => {
+        if (rowSelection.length > 0) {
+            document.querySelector('#enableBtn').disabled = false;
+            document.querySelector('#disableBtn').disabled = false;
+        } else {
+            document.querySelector('#enableBtn').disabled = true;
+            document.querySelector('#disableBtn').disabled = true;
+        }
+    }, [rowSelection]);
+    
     const tableColumns = [
-        { key: '-', label: '選取' },
-        { key: 'email', label: '電郵' },
-        { key: 'phoneNumber', label: '電話' },
-        { key: 'emailVerified', label: '已驗證' },
-        { key: 'isAdmin', label: '管理員' },
-        { key: 'isDisable', label: '已停用' },
-        { key: '/', label: '' ,}
-        // { key: 'actions', label: '操作' },
+        {
+            field: 'email', headerName: '電郵', flex: 1,
+            valueGetter: (params) => {
+                return params.row.email || '未設定';
+            },
+        }, {
+            field: 'emailVerified', headerName: '已驗證', flex: 1,
+            valueGetter: (params) => {
+                return params.row.emailVerified ? '✔️' : '❌';
+            },
+        }, {
+            field: 'isAdmin', headerName: '管理員', flex: 1,
+            valueGetter: (params) => {
+                return params.row.isAdmin ? '✔️' : '❌';
+            },
+        }, {
+            field: 'isDisable', headerName: '已停用', flex: 1,
+            valueGetter: (params) => {
+                return params.row.isDisable ? '✔️' : '❌';
+            },
+        }, {
+            field: 'id', headerName: '', flex: 1,
+            renderCell: (params) => {
+                return (
+                    <Button as={ Link } to={`${params.row.id}`}>詳細</Button>
+                );
+            }
+        }
     ];
 
-    useEffect(() => {
-        if (selectedUsers.length > 0) {
-            
-        }
-    }, [selectedUsers]);
+    const onEnableButtonClick = (e) => {
+        const db = getFirestore();
+        rowSelection.forEach(async (id) => {
+            await setDoc(doc(db, "users", id), {
+                isDisable: false,
+            }, { merge: true });
+            setUsers(users.map((user) => {
+                if (rowSelection.includes(user.id)) {
+                    user.isDisable = false;
+                }
+                return user;
+            }));
+        });
+    };
+
+    const onDisableButtonClick = (e) => {
+        const db = getFirestore();
+        rowSelection.forEach(async (id) => {
+            await setDoc(doc(db, "users", id), {
+                isDisable: true,
+            }, { merge: true });
+            setUsers(users.map((user) => {
+                if (rowSelection.includes(user.id)) {
+                    user.isDisable = true;
+                }
+                return user;
+            }));
+        });
+    };
 
     return (
     <div className="manage-users">
-        <Table tableColumns={ tableColumns }
-            tableData={ users }
-            setSelected={ setSelectedUsers } />
+        <Row className="my-3">
+            <Col xs={ 3 }/>
+            <Col xs={ 6 } className="text-center fs-1 fw-bold">會員管理</Col>
+            <Col xs={ 3 }>
+                <ButtonGroup className="d-flex my-3">
+                    <Button as={ Link } to="create">新增</Button>
+                    <Button id="enableBtn" variant="success" onClick={ onEnableButtonClick }>啟用</Button>
+                    <Button id="disableBtn" variant="danger" onClick={ onDisableButtonClick }>停用</Button>
+                </ButtonGroup>
+            </Col>
+        </Row>
+        <DataGrid autoHeight
+            rows={ users }
+            columns={ tableColumns }
+            pageSize={ 5 }
+            rowsPerPageOptions={ [1] }
+            onRowSelectionModelChange={ (newSelection) => {
+                setRowSelection(newSelection);
+            } }
+            checkboxSelection
+        />
     </div>
     );
 };
