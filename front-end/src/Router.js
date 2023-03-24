@@ -20,8 +20,8 @@ import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
 // products pages
 import Products from "./pages/products/Products";
-import AddProduct from "./pages/manage/products/AddProduct";
 import ProductDetails from "./pages/products/ProductDetails";
+import CreateProduct from "./pages/manage/products/CreateProduct";
 import ManageProducts from "./pages/manage/products/ManageProducts";
 import ManageProductDetails from "./pages/manage/products/ManageProductDetails";
 // users pages
@@ -42,7 +42,7 @@ import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
 import createUserAction from "./actions/createUserAction";
 import updateUserAction from "./actions/updateUserAction";
-import addProductAction from "./actions/addProductAction";
+import createProductAction from "./actions/createProductAction";
 import updateProductAction from "./actions/updateProductAction";
 import resetPasswordAction from "./actions/resetPasswordAction";
 
@@ -89,7 +89,7 @@ export const router = createBrowserRouter(
 					<Route index
 						element={<ManageProducts />}
 						loader={ productsLoader } />
-					<Route path="add" element={<AddProduct />} action={ addProductAction }/>
+					<Route path="create" element={<CreateProduct />} action={ createProductAction }/>
 					<Route
 						path=":id"
 						element={<ManageProductDetails />}

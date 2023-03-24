@@ -61,7 +61,7 @@ export const RootLayout = () => {
 
 	return (
 	<div className="root-layout">
-		<Navbar bg="dark" variant="dark">
+		<Navbar bg="light" variant="light">
 			<Container>
 				<Navbar.Brand as={ Link } to="/" className="p-0"><img src={ logo } width="40" height="40" className="d-inline-block align-top" alt="logo" /></Navbar.Brand>
 				<Navbar.Toggle aria-controls="navbar-nav" />

@@ -42,7 +42,7 @@ export const CreateUser = () => {
             <Col xs={ 8 }>
                 <Card>
                     <Card.Body>
-                        <Card.Title className="text-center fs-1 fw-bold my-3">新增會員</Card.Title>
+                        <Card.Title className="text-center fs-1 fw-bold">新增會員</Card.Title>
                         <hr />
                         <Form method="POST">
                             <FloatingLabel type="email" id="email" name="email" label="電子郵件" value={ email }

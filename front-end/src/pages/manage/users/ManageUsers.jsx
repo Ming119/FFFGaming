@@ -58,9 +58,7 @@ export const ManageUsers = () => {
                 isDisable: false,
             }, { merge: true });
             setUsers(users.map((user) => {
-                if (rowSelection.includes(user.id)) {
-                    user.isDisable = false;
-                }
+                if (rowSelection.includes(user.id)) user.isDisable = false;
                 return user;
             }));
         });
@@ -73,9 +71,7 @@ export const ManageUsers = () => {
                 isDisable: true,
             }, { merge: true });
             setUsers(users.map((user) => {
-                if (rowSelection.includes(user.id)) {
-                    user.isDisable = true;
-                }
+                if (rowSelection.includes(user.id)) user.isDisable = true;
                 return user;
             }));
         });
@@ -88,7 +84,7 @@ export const ManageUsers = () => {
             <Col xs={ 6 } className="text-center fs-1 fw-bold">會員管理</Col>
             <Col xs={ 3 }>
                 <ButtonGroup className="d-flex my-3">
-                    <Button as={ Link } to="create">新增</Button>
+                    <Button as={ Link } to="create">新增會員</Button>
                     <Button id="enableBtn" variant="success" onClick={ onEnableButtonClick }>啟用</Button>
                     <Button id="disableBtn" variant="danger" onClick={ onDisableButtonClick }>停用</Button>
                 </ButtonGroup>

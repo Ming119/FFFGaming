@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadString } from "firebase/storage";
 
-export const addProductAction = async ({ request }) => {
+export const createProductAction = async ({ request }) => {
 
     const data = await request.formData();
     const name = data.get('productName');
@@ -37,4 +37,4 @@ export const addProductAction = async ({ request }) => {
     return redirect("/manage/products");
 };
 
-export default addProductAction;
+export default createProductAction;

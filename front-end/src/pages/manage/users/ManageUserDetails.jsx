@@ -83,6 +83,7 @@ export const ManageUserDetails = () => {
                             <FloatingLabel type="text" id="address" name="address" label="地址" value={ address }
                                 onChange={ (e) => { setAddress(e.target.value) }} disabled />
 
+                            <hr />
                             <ButtonGroup className='w-100'>
                                 <Button type="submit" variant={ buttonVariant } onClick={ onEditButtonClick }>{ buttonText }</Button>
                                 { user.isDisable ?
