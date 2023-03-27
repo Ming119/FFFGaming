@@ -1,6 +1,7 @@
 import { Form, Link } from "react-router-dom";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { FloatingLabel } from '../components/FloatingLabel';
+import { PersonFillAdd } from "react-bootstrap-icons";
 
 export const SignUp = () => {
 
@@ -14,7 +15,7 @@ export const SignUp = () => {
 						<FloatingLabel type="email" id="email" name="email" label="電子郵件" />
 						<FloatingLabel type="password" id="password" name="password" label="密碼" />
 						<FloatingLabel type="password" id="confirmPassword" name="confirmPassword" label="確認密碼" />								
-						<Button className="my-3" type='submit'>註冊</Button>
+						<Button className="my-3" type='submit'><PersonFillAdd /> 註冊</Button>
 					</Form>
 
 					<div className="text-muted">

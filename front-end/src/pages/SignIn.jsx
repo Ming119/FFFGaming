@@ -1,9 +1,10 @@
 import { Form, Link, useNavigate } from 'react-router-dom';
 import { Button, Card, Col, Row } from 'react-bootstrap';
-import { Google } from 'react-bootstrap-icons';
+import { BoxArrowInLeft , Google } from 'react-bootstrap-icons';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { FloatingLabel } from '../components/FloatingLabel';
+
 
 export const SignIn = () => {
     const navigate = useNavigate();
@@ -45,7 +46,7 @@ export const SignIn = () => {
                     <Form method="POST">
                         <FloatingLabel type="email" id="email" name="email" label="電子郵件" />
                         <FloatingLabel type="password" id="password" name="password" label="密碼" />
-                        <Button className="my-3" type='submit'>登入</Button>
+                        <Button className="my-3" type='submit'><BoxArrowInLeft /> 登入</Button>
                     </Form>
 
                     <Card.Link as={Link} to="/signup" className="link-secondary">註冊</Card.Link>

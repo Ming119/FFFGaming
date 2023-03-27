@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { DataGrid } from '@mui/x-data-grid';
-import { useLoaderData } from "react-router-dom";
-import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
+import { Link, useLoaderData } from "react-router-dom";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
+import { PersonAdd, PersonCheck, PersonSlash, PersonVcard } from "react-bootstrap-icons";
 
 export const ManageUsers = () => {
     
@@ -45,7 +45,7 @@ export const ManageUsers = () => {
             field: 'id', headerName: '', flex: 1,
             renderCell: (params) => {
                 return (
-                    <Button as={ Link } to={`${params.row.id}`}>詳細</Button>
+                    <Button as={ Link } to={`${params.row.id}`}><PersonVcard /> 詳細</Button>
                 );
             }
         }
@@ -80,13 +80,13 @@ export const ManageUsers = () => {
     return (
     <div className="manage-users">
         <Row className="my-3">
-            <Col xs={ 3 }/>
-            <Col xs={ 6 } className="text-center fs-1 fw-bold">會員管理</Col>
-            <Col xs={ 3 }>
+            <Col sm={ 0 } lg={ 4 } xl={ 3 } />
+            <Col sm={ 6 } lg={ 4 } xl={ 6 } className="text-center fs-1 fw-bold py-2">會員管理</Col>
+            <Col sm={ 6 } lg={ 4 } xl={ 3 }>
                 <ButtonGroup className="d-flex my-3">
-                    <Button as={ Link } to="create">新增會員</Button>
-                    <Button id="enableBtn" variant="success" onClick={ onEnableButtonClick }>啟用</Button>
-                    <Button id="disableBtn" variant="danger" onClick={ onDisableButtonClick }>停用</Button>
+                    <Button as={ Link } to="create"><PersonAdd /> 新增</Button>
+                    <Button id="enableBtn" variant="success" onClick={ onEnableButtonClick }><PersonCheck /> 啟用</Button>
+                    <Button id="disableBtn" variant="danger" onClick={ onDisableButtonClick }><PersonSlash /> 停用</Button>
                 </ButtonGroup>
             </Col>
         </Row>

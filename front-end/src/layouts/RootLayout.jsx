@@ -5,6 +5,7 @@ import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { auth } from "../firebase";
 import logo from "../assets/logo.png";
+import { CartFill, PersonFill, BoxArrowInLeft, BoxArrowInRight, PersonFillAdd, PeopleFill } from "react-bootstrap-icons"
 
 export const RootLayout = () => {
 	const navigate = useNavigate ();
@@ -72,22 +73,22 @@ export const RootLayout = () => {
 						<>
 						<Nav.Link as={ Link } to="manage/products">商品管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/orders">訂單管理</Nav.Link>
-						<Nav.Link as={ Link } to="manage/users">會員管理</Nav.Link>
+						<Nav.Link as={ Link } to="manage/users"><PeopleFill /> 會員管理</Nav.Link>
 						<Nav.Link as={ Link } to="statistics">統計</Nav.Link>
 						</>
 					)}
 					</Nav>
 					<Nav>
-						<Nav.Link as={ Link } to="cart">Cart</Nav.Link>
+						<Nav.Link as={ Link } to="cart"><CartFill /></Nav.Link>
 						{ user ? (
 							<>
-							<Nav.Link as={ Link } to="profile">會員中心</Nav.Link>
-							<Nav.Link as={ Link } onClick={ onSignOutButtonClick }>登出</Nav.Link>
+							<Nav.Link as={ Link } to="profile"><PersonFill /></Nav.Link>
+							<Nav.Link as={ Link } onClick={ onSignOutButtonClick }><BoxArrowInRight /> 登出</Nav.Link>
 							</>
 						) : (
 							<>
-							<Nav.Link as={ Link } to="signin">登入</Nav.Link>
-							<Nav.Link as={ Link } to="signup">註冊</Nav.Link>
+							<Nav.Link as={ Link } to="signin"><BoxArrowInLeft /> 登入</Nav.Link>
+							<Nav.Link as={ Link } to="signup"><PersonFillAdd /> 註冊</Nav.Link>
 							</>
 						)}
 					</Nav>

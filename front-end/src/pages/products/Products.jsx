@@ -8,7 +8,7 @@ export const Products = () => {
 	return (
 	<div className="products">
 		<h1>Products</h1>
-		<Row>
+		<Row className='my-3'>
 			{ products.map((product) => (
 				product.isEnabled && (
 				<Col key={ product.id } sm={12} md={6} lg={4} xl={3}>
