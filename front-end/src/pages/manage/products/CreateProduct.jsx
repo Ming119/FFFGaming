@@ -1,79 +1,61 @@
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Link } from 'react-router-dom';
 import { CaretLeftFill } from 'react-bootstrap-icons';
 import { FloatingLabel } from '../../../components/FloatingLabel';
-import { Button, Card, Carousel, Col, Row } from 'react-bootstrap';
+import { PlusSquare, PlusSquareDotted } from 'react-bootstrap-icons';
+import { Row, Col, Card, Button, Image, OverlayTrigger, Popover, ListGroup } from 'react-bootstrap';
 
 export const CreateProduct = () => {
 
-    const [ files, setFiles ] = useState([]);
-    const [ filesDataURL, setFilesDataURL ] = useState([]);
+    const [ coverImageDataURL, setCoverImageDataURL ] = useState();
+    const [ imagesDataURL, setImagesDataURL ] = useState([]);
+    const [ attributes, setAttributes ] = useState([]);
 
-    const handleImageChange = (e) => {
-        const files = e.target.files;
+    const handleImagechange = (setImage) => {
+        const fileInput = document.createElement('input');
 
-        for (let i = 0; i < files.length; i++) {
-            if (!files[i].type.match(/image\/(png|jpg|jpeg)/i)) {
+        fileInput.type = 'file';
+        fileInput.name = 'image';
+        fileInput.accept = 'image/*';
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+
+            if (!file.type.match(/image\/(png|jpg|jpeg)/i)) {
                 alert('請上傳圖片檔案');
                 return;
             }
-        }
 
-        setFiles(files);
+            const fileDataURLReader = new FileReader();
+            fileDataURLReader.onload = (e) => {
+                setImage(e.target.result);
+            };
+            fileDataURLReader.readAsDataURL(file);
+        }
+        fileInput.click();
     };
 
-    const showImages = () => {
-        const images = [];
-        for (let i = 0; i < files.length; i++) {
-            images.push(
-                <Carousel.Item key={i}>
-                    <img src={filesDataURL[i]} className="w-100" />
-                </Carousel.Item>
-            );
-        }
-        return images;
-    }
+    const onCoverImageClick = () => {
+        handleImagechange(setCoverImageDataURL);
+    };
+
+    const onAddImageClick = () => {
+        handleImagechange((imageDataURL) => {
+            setImagesDataURL(prev => [...prev, imageDataURL]);
+        })
+    };
+
+    const removeImage = (index) => {
+        setImagesDataURL(prev => {
+            const newImagesDataURL = [...prev];
+            newImagesDataURL.splice(index, 1);
+            return newImagesDataURL;
+        });
+    };
 
     useEffect(() => {
-        let fileDataURLReader, isCancel = false;
-        if (files) {
-            const readFiles = (index) => {
-                if (index >= files.length) return;
-
-                fileDataURLReader = new FileReader();
-                fileDataURLReader.onload = (e) => {
-                    if (!isCancel) {
-                        setFilesDataURL(prev => [...prev, e.target.result]);
-                        sessionStorage.setItem(`imageDataURL_${index}`, e.target.result);
-                    }
-                };
-
-                fileDataURLReader.readAsDataURL(files[index]);
-                readFiles(index + 1);
-            }
-            
-            readFiles(0);
-            sessionStorage.setItem('imagesLength', files.length);
-        }
-    
-        return () => {
-            isCancel = true;
-            if (fileDataURLReader && fileDataURLReader.readyState === 1) fileDataURLReader.abort();
-        }
-    }, [files]);
-    
-    const onPaperClick = (e) => {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-
-        fileInput.onchange = (e) => {
-            handleImageChange(e);
-        }
-    };
+        sessionStorage.setItem('coverImage', coverImageDataURL);
+        sessionStorage.setItem('images', JSON.stringify(imagesDataURL));
+    }, [coverImageDataURL, imagesDataURL]);
 
     return (
     <div className="add-product">
@@ -89,6 +71,53 @@ export const CreateProduct = () => {
                         <Card.Title className='text-center fs-1 fw-bold'>新增商品</Card.Title>
                         <hr />
                         <Form method='POST'>
+                            <Row className='my-3'>
+                                { coverImageDataURL ? (
+                                    <Col xs={ 2 }>
+                                        <OverlayTrigger trigger="click"
+                                            overlay={
+                                                <Popover>
+                                                    <Popover.Body className='p-1'>
+                                                        <ListGroup variant="flush">
+                                                            <ListGroup.Item action
+                                                                onClick={ onCoverImageClick }
+                                                            >更換圖片</ListGroup.Item>
+                                                        </ListGroup>
+                                                    </Popover.Body>
+                                                </Popover>
+                                            }>
+                                            <Image src={ coverImageDataURL } fluid rounded />
+                                        </OverlayTrigger>
+                                    </Col>
+                                ) : (
+                                    <Col xs={ 2 }>
+                                        <PlusSquare size="100%" onClick={ onCoverImageClick }/>
+                                    </Col>
+                                ) }
+                                
+                                { imagesDataURL.map((imageDataURL, index) => (
+                                    <Col xs={ 2 } key={ index }>
+                                        <OverlayTrigger trigger="click"
+                                            overlay={
+                                                <Popover>
+                                                    <Popover.Body className='p-1'>
+                                                        <ListGroup variant="flush">
+                                                            <ListGroup.Item action
+                                                                onClick={ () => removeImage(index) }
+                                                            >移除圖片</ListGroup.Item>
+                                                        </ListGroup>
+                                                    </Popover.Body>
+                                                </Popover>
+                                            }>
+                                            <Image src={ imageDataURL } fluid rounded />
+                                        </OverlayTrigger>
+                                    </Col>
+                                )) }
+                                <Col xs={ 2 }>
+                                    <PlusSquareDotted size="100%" onClick={ onAddImageClick }/>
+                                </Col>
+                            </Row>
+                            
                             <FloatingLabel type="text" name="productName" id="productName" label="商品名稱" />
 
                             <Row className='my-3'>
@@ -100,31 +129,23 @@ export const CreateProduct = () => {
                                 </Col>
                             </Row>
 
-                            <FloatingLabel type="text" name="description" id="description" label="說明" textarea />
-
-                            <Box sx={{
-                                    display: 'flex',
-                                    '& > :not(style)': {
-                                    m: 1,
-                                    width: 128,
-                                    height: 128,
-                                    },
-                                }} >
-                                <Paper variant="outlined"></Paper>
-                                <Paper elevation={ 1 } onClick={ onPaperClick }></Paper>
-                            </Box>
-                                {/* <label className="form-label" htmlFor="image">圖片</label>
-                                <input type="file" className="form-control"
-                                    name="image" id="image" accept="image/*"
-                                    onChange={ handleImageChange } multiple /> */}
+                            <div className='form-floating my-3'>
+                                <textarea className="form-control" type="text"
+                                    name="description" id="description" placeholder="說明" />
+                                <label className="form-label" htmlFor="description">說明</label>
+                            </div>
                             
-                            <Row className='mx-auto my-3'><Button type='submit'>新增</Button></Row>
+                            {/* TODO */}
+                            { attributes.map((attribute, index) => (
+                                <Row className='my-3' key={ index }></Row>
+                            )) }
+                            <Row className='mx-auto my-3'>
+                                <Button variant='primary'>新增屬性</Button>
+                            </Row>
+                            
+                            <Row className='mx-auto my-3'><Button variant='success' type='submit'>新增</Button></Row>
                         </Form>
                     </Card.Body>
-
-                    { filesDataURL && (
-                        <Carousel>{ showImages() }</Carousel>
-                    )}
                 </Card>
             </Col>
             <Col xs={ 2 } />
