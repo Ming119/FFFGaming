@@ -9,8 +9,8 @@ export const updateUserAction = async ({ request }) => {
     const phoneNumber = data.get('phoneNumber');
     const address = data.get('address');
 
-    if (!id) return { message: 'Unknown error, please refresh and try later.', variant: 'error' };
-    if (!email) return { message: 'Email is required', variant: 'error' };
+    if (!id) return { message: 'Unknown error, please refresh and try later.', variant: 'danger' };
+    if (!email) return { message: 'Email is required', variant: 'danger' };
 
     const db = getFirestore();
     await setDoc(doc(db, "users", id), {

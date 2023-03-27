@@ -1,5 +1,5 @@
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getBlob } from "firebase/storage";
 
 export const productsLoader = async () => {
     const db = getFirestore();
@@ -8,7 +8,16 @@ export const productsLoader = async () => {
     const productsSnapshot = await getDocs(collection(db, "products"));
     const products = productsSnapshot.docs.map(async (doc) => {
         const imageRef = ref(storage, `${doc.id}/0.jpg`);
-        const imageUrl = await getDownloadURL(imageRef);
+        const blob = await getBlob(imageRef);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        const imageUrl = await new Promise((resolve) => {
+            reader.onloadend = () => {
+                const base64data = reader.result;
+                resolve(base64data);
+            };
+        });
+        
         return {
             ...doc.data(),
             id: doc.id,

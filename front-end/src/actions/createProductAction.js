@@ -1,19 +1,24 @@
 import { redirect } from "react-router-dom";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadString } from "firebase/storage";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 export const createProductAction = async ({ request }) => {
 
     const data = await request.formData();
+    
     const name = data.get('productName');
     const price = data.get('price');
     const description = data.get('description');
     const countInStock = data.get('countInStock');
     
+    const coverImage = sessionStorage.getItem('coverImage');
+    const images = JSON.parse(sessionStorage.getItem("images"));
+
     if (!name) return { message: "Product name is required.", variant: "danger" };
     if (!price) return { message: "Price is required.", variant: "danger" };
     if (!countInStock) return { message: "Count in stock is required.", variant: "danger" };
     if (!description) return { message: "Description is required.", variant: "danger" };
+    if (!coverImage) return { message: "Cover image is required.", variant: "danger" };
 
     const db = getFirestore();
     const newProduct = await addDoc(collection(db, "products"), {
@@ -26,13 +31,13 @@ export const createProductAction = async ({ request }) => {
     });
 
     const storage = getStorage();
-    const imageLength = sessionStorage.getItem("imagesLength");
+    await uploadString(ref(storage, `${newProduct.id}/0.jpg`), coverImage, 'data_url');
+    for (let i = 0; i < images.length; i++) {
+        await uploadString(ref(storage, `${newProduct.id}/${i+1}.jpg`), images[i], 'data_url');
+    }
 
-    for (let i = 0; i < imageLength; i++) {
-        const imageDataURL = sessionStorage.getItem(`imageDataURL_${i}`);
-        await uploadString(ref(storage, `${newProduct.id}/${i}.jpg`), imageDataURL, 'data_url');
-        sessionStorage.removeItem(`imageDataURL_${i}`);
-    }    
+    sessionStorage.removeItem('coverImage');
+    sessionStorage.removeItem('images');
     
     return redirect("/manage/products");
 };

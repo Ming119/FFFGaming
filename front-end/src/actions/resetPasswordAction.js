@@ -6,9 +6,9 @@ export const resetPasswordAction = async ({ request }) => {
     
     const auth = getAuth();
 
-    const respone = sendPasswordResetEmail(auth, email)
+    const respone = sendPasswordResetEmail(auth, email, {url: "http://localhost:3000"})
     .then(() => {
-        return { message: "密碼重置電子郵件已發送", variant: "success" }
+        return { message: `密碼重置電子郵件已發送至${email}`, variant: "success" }
     }).catch(error => {
         switch (error.code) {
             case 'auth/invalid-email':

@@ -12,12 +12,11 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import ForgetPassword from "./pages/ForgetPassword";
 import EmailVerification from "./pages/EmailVerification";
-//Profile pages
-import Profile from "./pages/profile/Profile";
-import EditProfile from "./pages/profile/EditProfile";
+
 // products pages
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
@@ -45,6 +44,7 @@ import updateUserAction from "./actions/updateUserAction";
 import createProductAction from "./actions/createProductAction";
 import updateProductAction from "./actions/updateProductAction";
 import resetPasswordAction from "./actions/resetPasswordAction";
+import updateProfileAction from "./actions/updateProfileAction";
 
 // Errors
 import ProductDetailsError from "./errors/ProductDetailsError";
@@ -64,14 +64,10 @@ export const router = createBrowserRouter(
 			<Route path="forgetpassword"
 				element={<ForgetPassword />}
 				action={ resetPasswordAction } />
-			<Route path="profile">
-				<Route index
-					element={<Profile />}
-					loader={ userDetailsLoader } />
-				<Route path="edit"
-					element={<EditProfile />}
-					loader={ userDetailsLoader } />
-			</Route>
+			<Route path="profile"
+				element={<Profile />}
+				loader={ userDetailsLoader }
+				action={ updateProfileAction } />
 
 			<Route path="products">
 				<Route index

@@ -1,5 +1,5 @@
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
+import { getStorage, ref, getBlob, listAll } from "firebase/storage";
 
 export const productDetailsLoader = async ({ params }) => {
     const { id } = params;
@@ -12,8 +12,15 @@ export const productDetailsLoader = async ({ params }) => {
     
     const { items } = await listAll(folderRef);
     const images = await Promise.all(items.map(async (itemRef) => {
-        const url = await getDownloadURL(itemRef);
-        return url;
+        const blob = await getBlob(itemRef);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise((resolve) => {
+            reader.onloadend = () => {
+                const base64data = reader.result;
+                resolve(base64data);
+            };
+        });
     }));
 
     return {
@@ -21,8 +28,6 @@ export const productDetailsLoader = async ({ params }) => {
         images,
         ...productSnapshot.data(),
     };
-
-    
 };
 
 export default productDetailsLoader;
