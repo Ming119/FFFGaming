@@ -31,6 +31,7 @@ import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 import ManageOrders from "./pages/manage/ManageOrders";
 
 // Loaders
+import cartLoader from "./loaders/cartLoader";
 import usersLoader from "./loaders/usersLoader";
 import productsLoader from "./loaders/productsLoader";
 import userDetailsLoader from "./loaders/userDetailsLoader";
@@ -39,6 +40,7 @@ import productDetailsLoader from "./loaders/productDetailsLoader";
 // Actions
 import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
+import addToCartAction from "./actions/addToCartAction";
 import createUserAction from "./actions/createUserAction";
 import updateUserAction from "./actions/updateUserAction";
 import createProductAction from "./actions/createProductAction";
@@ -53,7 +55,9 @@ export const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<RootLayout />}>
 			<Route index element={<Home />} />
-			<Route path="cart" element={<Cart />} />
+			<Route path="cart"
+				element={<Cart />}
+				loader={ cartLoader } />
 			<Route path="signin"
 				element={<SignIn />}
 				action={ signInAction } />
@@ -77,7 +81,8 @@ export const router = createBrowserRouter(
 					path=":id"
 					element={<ProductDetails />}
 					errorElement={ <ProductDetailsError /> }
-					loader={ productDetailsLoader } />
+					loader={ productDetailsLoader }
+					action={ addToCartAction } />
 			</Route>
 
 			<Route path="manage">

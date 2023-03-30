@@ -74,14 +74,14 @@ export const RootLayout = () => {
 						<Nav.Link as={ Link } to="manage/products">商品管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/orders">訂單管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/users"><PeopleFill /> 會員管理</Nav.Link>
-						<Nav.Link as={ Link } to="statistics">統計</Nav.Link>
+						{/* <Nav.Link as={ Link } to="statistics">統計</Nav.Link> */}
 						</>
 					)}
 					</Nav>
 					<Nav>
-						<Nav.Link as={ Link } to="cart"><CartFill /></Nav.Link>
 						{ user ? (
 							<>
+							<Nav.Link as={ Link } to="cart"><CartFill /></Nav.Link>
 							<Nav.Link as={ Link } to="profile"><PersonFill /></Nav.Link>
 							<Nav.Link as={ Link } onClick={ onSignOutButtonClick }><BoxArrowInRight /> 登出</Nav.Link>
 							</>

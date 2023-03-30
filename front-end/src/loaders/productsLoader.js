@@ -7,16 +7,20 @@ export const productsLoader = async () => {
 
     const productsSnapshot = await getDocs(collection(db, "products"));
     const products = productsSnapshot.docs.map(async (doc) => {
+        
         const imageRef = ref(storage, `${doc.id}/0.jpg`);
         const blob = await getBlob(imageRef);
         const reader = new FileReader();
         reader.readAsDataURL(blob);
+        
         const imageUrl = await new Promise((resolve) => {
             reader.onloadend = () => {
                 const base64data = reader.result;
                 resolve(base64data);
             };
         });
+        
+        
         
         return {
             ...doc.data(),

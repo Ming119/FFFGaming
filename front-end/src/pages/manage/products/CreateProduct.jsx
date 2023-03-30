@@ -3,14 +3,17 @@ import { Form, Link } from 'react-router-dom';
 import { CaretLeftFill } from 'react-bootstrap-icons';
 import { FloatingLabel } from '../../../components/FloatingLabel';
 import { PlusSquare, PlusSquareDotted } from 'react-bootstrap-icons';
-import { Row, Col, Card, Button, Image, OverlayTrigger, Popover, ListGroup } from 'react-bootstrap';
+import { Row, Col, Card, CloseButton, Button, Image, OverlayTrigger, Popover, ListGroup, Accordion } from 'react-bootstrap';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export const CreateProduct = () => {
 
     const [ coverImageDataURL, setCoverImageDataURL ] = useState();
     const [ imagesDataURL, setImagesDataURL ] = useState([]);
+    const [ richText, setRichText ] = useState([]);
     const [ attributes, setAttributes ] = useState([]);
-
+    
     const handleImagechange = (setImage) => {
         const fileInput = document.createElement('input');
 
@@ -52,10 +55,26 @@ export const CreateProduct = () => {
         });
     };
 
+    const onAddAttributeClick = () => {
+        setAttributes(prev => [...prev, { name: '', value: '' }]);
+    };
+
+    const removeAttribute = (index) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes.splice(index, 1);
+            return newAttributes;
+        });
+    };
+
     useEffect(() => {
         sessionStorage.setItem('coverImage', coverImageDataURL);
         sessionStorage.setItem('images', JSON.stringify(imagesDataURL));
     }, [coverImageDataURL, imagesDataURL]);
+
+    useEffect(() => {
+        sessionStorage.setItem('richText', richText);
+    }, [richText]);
 
     return (
     <div className="add-product">
@@ -128,19 +147,35 @@ export const CreateProduct = () => {
                                     <FloatingLabel type="number" name="countInStock" id="countInStock" label="庫存" />
                                 </Col>
                             </Row>
-
-                            <div className='form-floating my-3'>
-                                <textarea className="form-control" type="text"
-                                    name="description" id="description" placeholder="說明" />
-                                <label className="form-label" htmlFor="description">說明</label>
-                            </div>
                             
-                            {/* TODO */}
+                            <ReactQuill 
+                                theme="snow"
+                                modules={{
+                                    toolbar: [
+                                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                                        ['link', 'image'],
+                                        ['clean'],
+                                    ],
+                                }}
+                                value={ richText }
+                                onChange={ setRichText } />
+                            
+                            <Accordion className='my-3'>
                             { attributes.map((attribute, index) => (
-                                <Row className='my-3' key={ index }></Row>
+                                <Accordion.Item eventKey={ index } key={ index }>
+                                    <Accordion.Header><CloseButton onClick={ () => removeAttribute(index) }/> 屬性 #{ index + 1}</Accordion.Header>
+                                    <Accordion.Body>
+                                        <FloatingLabel type="text" name="attributeName" label="屬性名稱" />
+                                        <FloatingLabel type="text" name="attributeValue" label="屬性值" />
+                                    </Accordion.Body>
+                                </Accordion.Item>
                             )) }
+                            </Accordion>
+
                             <Row className='mx-auto my-3'>
-                                <Button variant='primary'>新增屬性</Button>
+                                <Button variant='primary' onClick={ onAddAttributeClick }>新增屬性</Button>
                             </Row>
                             
                             <Row className='mx-auto my-3'><Button variant='success' type='submit'>新增</Button></Row>

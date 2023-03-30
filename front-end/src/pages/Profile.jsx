@@ -8,10 +8,10 @@ export const Profile = () => {
     const user = useLoaderData();
     const actionData = useActionData();
     
-    const [ email, setEmail ] = useState(user.email || '');
-    const [ name, setName ] = useState(user.displayName || '');
+    const [ email, setEmail ]             = useState(user.email || '');
+    const [ name, setName ]               = useState(user.displayName || '');
     const [ phoneNumber, setPhoneNumber ] = useState(user.phoneNumber || '');
-    const [ address, setAddress ] = useState(user.address || '');
+    const [ address, setAddress ]         = useState(user.address || '');
 
     const [ isEditState, setIsEditState ] = useState(false);
 

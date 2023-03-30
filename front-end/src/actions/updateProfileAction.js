@@ -8,7 +8,7 @@ export const updateProfileAction = async ({ request }) => {
 
     if (!id) return { message: 'Unknown error, please refresh and try later.', variant: 'danger' };
 
-    if (!data.has("email")) {
+    if (data.entries().length === 1) {
         const auth = getAuth();
         const email = auth.currentUser.email;
 

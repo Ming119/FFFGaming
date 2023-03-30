@@ -8,24 +8,23 @@ export const createProductAction = async ({ request }) => {
     
     const name = data.get('productName');
     const price = data.get('price');
-    const description = data.get('description');
     const countInStock = data.get('countInStock');
     
     const coverImage = sessionStorage.getItem('coverImage');
     const images = JSON.parse(sessionStorage.getItem("images"));
+    const richText = sessionStorage.getItem('richText');
 
     if (!name) return { message: "Product name is required.", variant: "danger" };
     if (!price) return { message: "Price is required.", variant: "danger" };
     if (!countInStock) return { message: "Count in stock is required.", variant: "danger" };
-    if (!description) return { message: "Description is required.", variant: "danger" };
     if (!coverImage) return { message: "Cover image is required.", variant: "danger" };
 
     const db = getFirestore();
     const newProduct = await addDoc(collection(db, "products"), {
         name,
         price,
-        description,
         countInStock,
+        richText,
         createdAt: new Date(),
         isEnabled: true,
     });

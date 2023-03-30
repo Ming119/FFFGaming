@@ -94,6 +94,7 @@ export const ManageProducts = () => {
             rows={ products }
             columns={ tableColumns }
             checkboxSelection
+            disableRowSelectionOnClick
             onRowSelectionModelChange={ (newSelection) => {
                 setRowSelection(newSelection);
             }}

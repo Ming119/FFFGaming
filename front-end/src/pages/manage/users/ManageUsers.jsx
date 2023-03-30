@@ -93,12 +93,11 @@ export const ManageUsers = () => {
         <DataGrid autoHeight
             rows={ users }
             columns={ tableColumns }
-            pageSize={ 5 }
-            rowsPerPageOptions={ [1] }
+            checkboxSelection
+            disableRowSelectionOnClick
             onRowSelectionModelChange={ (newSelection) => {
                 setRowSelection(newSelection);
             } }
-            checkboxSelection
         />
     </div>
     );

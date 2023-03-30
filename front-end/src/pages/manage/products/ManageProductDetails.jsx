@@ -4,7 +4,7 @@ import { FloatingLabel } from '../../../components/FloatingLabel';
 import { Form, Link, useLoaderData, useParams } from 'react-router-dom';
 import { CaretLeftFill, PlusSquareDotted } from 'react-bootstrap-icons';
 import { Row, Col, Card, ButtonGroup, Button, Image, OverlayTrigger, Popover, ListGroup } from 'react-bootstrap';
-
+import ReactQuill from 'react-quill';
 
 export const ManageProductDetails = () => {
 
@@ -14,7 +14,7 @@ export const ManageProductDetails = () => {
     const [ productName, setProductName ] = useState(product.name);
     const [ price, setPrice ] = useState(product.price);
     const [ countInStock, setCountInStock ] = useState(product.countInStock);
-    const [ description, setDescription ] = useState(product.description);
+    const [ richText, setRichText ] = useState(product.richText);
     const [ isEnabled, setIsEnabled ] = useState(product.isEnabled);
 
     const [ coverImageDataURL, setCoverImageDataURL ] = useState(product.images[0]);
@@ -144,12 +144,19 @@ export const ManageProductDetails = () => {
                                     label="庫存" onChange={ (e) => setCountInStock(e.target.value) }/></Col>
                             </Row>
                             
-                            <div className='form-floating my-3'>
-                                <textarea className="form-control" type="text"
-                                    name="description" id="description" placeholder="說明"
-                                    value={ description } onChange={ (e) => setDescription(e.target.value) } />
-                                <label className="form-label" htmlFor="description">說明</label>
-                            </div>
+                            <ReactQuill 
+                                theme="snow"
+                                modules={{
+                                    toolbar: [
+                                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                                        ['link', 'image'],
+                                        ['clean'],
+                                    ],
+                                }}
+                                value={ richText }
+                                onChange={ setRichText } />
 
                             {/* TODO */}
                             { attributes.map((attribute, index) => (
