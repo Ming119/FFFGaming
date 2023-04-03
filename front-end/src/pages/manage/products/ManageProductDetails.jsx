@@ -3,7 +3,7 @@ import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { FloatingLabel } from '../../../components/FloatingLabel';
 import { Form, Link, useLoaderData, useParams } from 'react-router-dom';
 import { CaretLeftFill, PlusSquareDotted } from 'react-bootstrap-icons';
-import { Row, Col, Card, ButtonGroup, Button, Image, OverlayTrigger, Popover, ListGroup } from 'react-bootstrap';
+import { Card, CloseButton, ButtonGroup, Button, Col, Image, Row, OverlayTrigger, Popover, ListGroup,Accordion } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 
 export const ManageProductDetails = () => {
@@ -19,7 +19,7 @@ export const ManageProductDetails = () => {
 
     const [ coverImageDataURL, setCoverImageDataURL ] = useState(product.images[0]);
     const [ imagesDataURL, setImagesDataURL ] = useState(product.images.slice(1));
-    const [ attributes, setAttributes ] = useState([]);
+    const [ attributes, setAttributes ] = useState(product.attributes);
 
     const handleImagechange = (setImage) => {
         const fileInput = document.createElement('input');
@@ -54,6 +54,18 @@ export const ManageProductDetails = () => {
         })
     };
 
+    const onAddAttributeClick = () => {
+        setAttributes(prev => [...prev, { name: '', options: ['', ''] }]);
+    };
+
+    const removeAttribute = (index) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes.splice(index, 1);
+            return newAttributes;
+        });
+    };
+
     const removeImage = (index) => {
         setImagesDataURL(prev => {
             const newImagesDataURL = [...prev];
@@ -62,10 +74,29 @@ export const ManageProductDetails = () => {
         });
     };
 
-    useEffect(() => {
-        sessionStorage.setItem('coverImage', coverImageDataURL);
-        sessionStorage.setItem('images', JSON.stringify(imagesDataURL));
-    }, [coverImageDataURL, imagesDataURL]);
+    const onAttributeNameChange = (index, value) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes[index].name = value;
+            return newAttributes;
+        });
+    };
+
+    const onAttributeOptionChange = (index, valueIndex, value) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes[index].values[valueIndex] = value;
+            return newAttributes;
+        });
+    };
+
+    const onAddOptionClick = (e, index) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes[index].values.push('');
+            return newAttributes;
+        });
+    };
 
     const onButtonClick = async (e) => {
         const db = getFirestore();
@@ -73,6 +104,15 @@ export const ManageProductDetails = () => {
         await setDoc(docRef, { isEnabled: !isEnabled }, {merge: true});
         setIsEnabled(!isEnabled);
     };
+
+    useEffect(() => {
+        sessionStorage.setItem('coverImage', coverImageDataURL);
+        sessionStorage.setItem('images', JSON.stringify(imagesDataURL));
+    }, [coverImageDataURL, imagesDataURL]);
+
+    useEffect(() => {
+        sessionStorage.setItem('richText', richText);
+    }, [richText]);
 
     return (
     <div className="manage-product-details">
@@ -158,12 +198,38 @@ export const ManageProductDetails = () => {
                                 value={ richText }
                                 onChange={ setRichText } />
 
-                            {/* TODO */}
+                            <Accordion className='my-3'>
                             { attributes.map((attribute, index) => (
-                                <Row className='my-3' key={ index }></Row>
+                                <Accordion.Item eventKey={ index } key={ index }>
+                                    <Accordion.Header><CloseButton onClick={ () => removeAttribute(index) }/> 屬性 #{ index + 1}</Accordion.Header>
+                                    <Accordion.Body>
+                                        <Row>
+                                            <Col>
+                                                <FloatingLabel type="text" name="attributeName" label="屬性名稱"
+                                                    onChange={ (e) => onAttributeNameChange(index, e.target.value) } value={attribute.name}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            { attribute.values.map((option, optionIndex) => (
+                                                <Col xs={12} lg={6} key={ optionIndex }>
+                                                    <FloatingLabel type="text" name={ `attributeValues_${attributes[index].name}` } label="屬性值"
+                                                        onChange={ (e) => onAttributeOptionChange(index, optionIndex, e.target.value) } value={option}/>
+                                                </Col>
+                                            )) }
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <Button type="button" onClick={ (e) => onAddOptionClick(e, index) }>增加選項</Button>
+                                            </Col>
+                                        </Row>
+
+                                    </Accordion.Body>
+                                </Accordion.Item>
                             )) }
+                            </Accordion>
+                            
                             <Row className='mx-auto my-3'>
-                                <Button variant='primary'>新增屬性</Button>
+                            <Button type="button" variant='primary' onClick={ onAddAttributeClick }>增加屬性</Button>
                             </Row>
 
                             <Row className='mx-auto my-3'>

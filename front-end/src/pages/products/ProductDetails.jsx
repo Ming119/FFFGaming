@@ -8,7 +8,8 @@ export const ProductDetails = () => {
     const product = useLoaderData();
 
     const [ quantity, setQuantity ] = useState(1);
-
+    const attributes = product.attributes;
+    
     return (
     <div className="product-details">
         <Button variant="outline-primary" size="sm" as={ Link } to=".." className="my-3">
@@ -44,7 +45,20 @@ export const ProductDetails = () => {
                             數量<input type="number" name="quantity" id="quantity" min="1" max={ product.countInStock } value={ quantity } onChange={ (e) => { setQuantity(e.target.value) }} /> { `還剩 ${product.countInStock} 件` }
                         </Col>
                     </Row>
-
+                    
+                    { attributes && (attributes.map((attribute, index) => (
+                        <Row className="my-3" key={index}>
+                            <Col className="fs-6">
+                                { attribute.name }
+                                <input type="hidden" name="options" value={ attribute.name } />
+                                <select name={ `options_${attribute.name }` } id={ attribute.name }>
+                                    { attribute.values.map((item, index) => (
+                                        <option key={index} value={ item }>{ item }</option>
+                                    )) }
+                                </select>
+                            </Col>
+                        </Row>
+                    ))) }
                     
                     <Button variant="success" type="submit"><CartPlus size="1.5rem" /> 加入購物車</Button>
                     

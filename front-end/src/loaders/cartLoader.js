@@ -16,9 +16,11 @@ export const cartLoader = async () => {
     const user = await getDoc(doc(db, "users", userId));
     const cart = user.data().cart;
 
+    if (!cart || cart.length === 0)return [];
+
     const data = cart.map(async (item) => {
 
-        const imageRef = ref(storage, `${item.id}/0.jpg`);
+        const imageRef = ref(storage, `${item.productId}/0.jpg`);
         const blob = await getBlob(imageRef);
         const reader = new FileReader();
         reader.readAsDataURL(blob);

@@ -13,7 +13,7 @@ export const CreateProduct = () => {
     const [ imagesDataURL, setImagesDataURL ] = useState([]);
     const [ richText, setRichText ] = useState([]);
     const [ attributes, setAttributes ] = useState([]);
-    
+
     const handleImagechange = (setImage) => {
         const fileInput = document.createElement('input');
 
@@ -56,13 +56,37 @@ export const CreateProduct = () => {
     };
 
     const onAddAttributeClick = () => {
-        setAttributes(prev => [...prev, { name: '', value: '' }]);
+        setAttributes(prev => [...prev, { name: '', options: ['', ''] }]);
     };
 
     const removeAttribute = (index) => {
         setAttributes(prev => {
             const newAttributes = [...prev];
             newAttributes.splice(index, 1);
+            return newAttributes;
+        });
+    };
+
+    const onAttributeNameChange = (index, value) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes[index].name = value;
+            return newAttributes;
+        });
+    };
+
+    const onAttributeOptionChange = (index, optionIndex, value) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes[index].options[optionIndex] = value;
+            return newAttributes;
+        });
+    };
+
+    const onAddOptionClick = (e, index) => {
+        setAttributes(prev => {
+            const newAttributes = [...prev];
+            newAttributes[index].options.push('');
             return newAttributes;
         });
     };
@@ -167,15 +191,33 @@ export const CreateProduct = () => {
                                 <Accordion.Item eventKey={ index } key={ index }>
                                     <Accordion.Header><CloseButton onClick={ () => removeAttribute(index) }/> 屬性 #{ index + 1}</Accordion.Header>
                                     <Accordion.Body>
-                                        <FloatingLabel type="text" name="attributeName" label="屬性名稱" />
-                                        <FloatingLabel type="text" name="attributeValue" label="屬性值" />
+                                        <Row>
+                                            <Col>
+                                                <FloatingLabel type="text" name="attributeName" label="屬性名稱"
+                                                    onChange={ (e) => onAttributeNameChange(index, e.target.value) } />
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            { attribute.options.map((option, optionIndex) => (
+                                                <Col xs={12} lg={6} key={ optionIndex }>
+                                                    <FloatingLabel type="text" name={ `attributeValues_${attributes[index].name}` } label="屬性值"
+                                                        onChange={ (e) => onAttributeOptionChange(index, optionIndex, e.target.value) } />
+                                                </Col>
+                                            )) }
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <Button type="button" onClick={ (e) => onAddOptionClick(e, index) }>增加選項</Button>
+                                            </Col>
+                                        </Row>
+
                                     </Accordion.Body>
                                 </Accordion.Item>
                             )) }
                             </Accordion>
 
                             <Row className='mx-auto my-3'>
-                                <Button variant='primary' onClick={ onAddAttributeClick }>新增屬性</Button>
+                                <Button type="button" variant='primary' onClick={ onAddAttributeClick }>增加屬性</Button>
                             </Row>
                             
                             <Row className='mx-auto my-3'><Button variant='success' type='submit'>新增</Button></Row>

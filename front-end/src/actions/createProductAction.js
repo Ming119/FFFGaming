@@ -10,6 +10,14 @@ export const createProductAction = async ({ request }) => {
     const price = data.get('price');
     const countInStock = data.get('countInStock');
     
+    let attributesObject = [];
+    const attributes = data.getAll('attributeName');
+    attributes.forEach((attribute, index) => {
+        if (!attribute) return;
+        const values = data.getAll(`attributeValues_${attribute}`);
+        attributesObject.push({ name: attribute, values: values.filter(value => value) });
+    });
+
     const coverImage = sessionStorage.getItem('coverImage');
     const images = JSON.parse(sessionStorage.getItem("images"));
     const richText = sessionStorage.getItem('richText');
@@ -27,6 +35,7 @@ export const createProductAction = async ({ request }) => {
         richText,
         createdAt: new Date(),
         isEnabled: true,
+        attributes: attributesObject,
     });
 
     const storage = getStorage();
