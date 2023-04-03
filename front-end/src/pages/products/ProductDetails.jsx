@@ -51,11 +51,12 @@ export const ProductDetails = () => {
                             <Col className="fs-6">
                                 { attribute.name }
                                 <input type="hidden" name="options" value={ attribute.name } />
-                                <select name={ `options_${attribute.name }` } id={ attribute.name }>
-                                    { attribute.values.map((item, index) => (
-                                        <option key={index} value={ item }>{ item }</option>
-                                    )) }
-                                </select>
+                                { attribute.values.map((item, index) => (
+                                    <div key={index} className="form-check form-check-inline">
+                                        <input className="form-check-input" type="radio" name={ `options_${attribute.name}` } id={ item } value={ item } />
+                                        <label className="form-check-label" htmlFor={ item }>{ item }</label>
+                                    </div>
+                                )) }
                             </Col>
                         </Row>
                     ))) }
