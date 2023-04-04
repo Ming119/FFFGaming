@@ -9,12 +9,16 @@ export const createProductAction = async ({ request }) => {
     const name = data.get('productName');
     const price = data.get('price');
     const countInStock = data.get('countInStock');
-    
+    const correspondingImage = data.get('correspondingImage');
+
+    let attributesCount = 0;
+
     let attributesObject = [];
     const attributes = data.getAll('attributeName');
     attributes.forEach((attribute, index) => {
         if (!attribute) return;
         const values = data.getAll(`attributeValues_${attribute}`);
+        if (correspondingImage && correspondingImage === attribute) attributesCount = values.filter(value => value).length;
         attributesObject.push({ name: attribute, values: values.filter(value => value) });
     });
 
@@ -26,6 +30,7 @@ export const createProductAction = async ({ request }) => {
     if (!price) return { message: "Price is required.", variant: "danger" };
     if (!countInStock) return { message: "Count in stock is required.", variant: "danger" };
     if (!coverImage) return { message: "Cover image is required.", variant: "danger" };
+    if (correspondingImage && attributesCount !== images.length+1) return { message: "Number of images must be equal to number of values for corresponding attribute.", variant: "danger" };
 
     const db = getFirestore();
     const newProduct = await addDoc(collection(db, "products"), {
@@ -36,6 +41,7 @@ export const createProductAction = async ({ request }) => {
         createdAt: new Date(),
         isEnabled: true,
         attributes: attributesObject,
+        correspondingImage,
     });
 
     const storage = getStorage();

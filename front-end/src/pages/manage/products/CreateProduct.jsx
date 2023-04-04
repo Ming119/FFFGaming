@@ -209,6 +209,14 @@ export const CreateProduct = () => {
                                             <Col>
                                                 <Button type="button" onClick={ (e) => onAddOptionClick(e, index) }>增加選項</Button>
                                             </Col>
+                                            <Col>
+                                                <div className="form-check">
+                                                    <input className="form-check-input" type="radio" name="correspondingImage" id={`correspondingImage_${attributes[index].name}`} value={attributes[index].name}/>
+                                                    <label className="form-check-label" htmlFor={`correspondingImage_${attributes[index].name}`}>
+                                                        對應圖片
+                                                    </label>
+                                                </div>
+                                            </Col>
                                         </Row>
 
                                     </Accordion.Body>
