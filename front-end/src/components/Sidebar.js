@@ -1,8 +1,8 @@
 import { Col, Nav, Row, Tab } from 'react-bootstrap';
-import NewProducts from '../pages/submenu/NewProducts';
-import PopularProducts from '../pages/submenu/PopularProducts';
+import NewProducts from '../pages/sidebar/NewProducts';
+import PopularProducts from '../pages/sidebar/PopularProducts';
 
-export const SubMenu = (props) => {
+export const Sidebar = (props) => {
 
     return (
       <Tab.Container id="left-tabs-example" defaultActiveKey="NewProducts">
@@ -33,4 +33,4 @@ export const SubMenu = (props) => {
     );
 };
 
-export default SubMenu;
+export default Sidebar;

@@ -1,10 +1,10 @@
-import { SubMenu } from '../../components/SubMenu';
+import { Sidebar } from '../../components/Sidebar';
 
 export const Products = () => {
 
 	return (
 	<div className="products">
-		<SubMenu />
+		<Sidebar />
 	</div>
 	);
 };
