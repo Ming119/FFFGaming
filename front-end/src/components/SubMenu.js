@@ -1,0 +1,36 @@
+import { Col, Nav, Row, Tab } from 'react-bootstrap';
+import NewProducts from '../pages/submenu/NewProducts';
+import PopularProducts from '../pages/submenu/PopularProducts';
+
+export const SubMenu = (props) => {
+
+    return (
+      <Tab.Container id="left-tabs-example" defaultActiveKey="NewProducts">
+        <Row>
+          <Col sm={3}>
+            <Nav variant="pills" className="flex-column">
+              <h3>Product Categories</h3>
+              <Nav.Item>
+                <Nav.Link eventKey="NewProducts">New Products</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="PopularProducts">Popular Products</Nav.Link>
+              </Nav.Item>
+            </Nav>
+          </Col>
+          <Col sm={9}>
+            <Tab.Content>
+              <Tab.Pane eventKey="NewProducts">
+                <NewProducts />
+              </Tab.Pane>
+              <Tab.Pane eventKey="PopularProducts">
+                <PopularProducts />
+              </Tab.Pane>
+            </Tab.Content>
+          </Col>
+        </Row>
+      </Tab.Container>
+    );
+};
+
+export default SubMenu;
