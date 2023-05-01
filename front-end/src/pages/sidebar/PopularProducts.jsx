@@ -11,7 +11,7 @@ const PopularProducts = () => {
                 <h1>Popular Products</h1>
                 <Row className='my-3'>
                     { products.map((product) => (
-                        product.isEnabled && (
+                        product.isEnabled && product.categories === 'popular' && (
                         <Col key={ product.id } sm={12} md={6} lg={4} xl={3}>
                             <Card as={ Link } to={`/products/${product.id}`} className="text-reset text-decoration-none">
                                 <Card.Img variant="top" src={ product.image } />
