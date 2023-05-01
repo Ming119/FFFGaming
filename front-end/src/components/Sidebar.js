@@ -1,4 +1,5 @@
 import { Col, Nav, Row, Tab } from 'react-bootstrap';
+import AllProducts from '../pages/sidebar/AllProducts';
 import NewProducts from '../pages/sidebar/NewProducts';
 import PopularProducts from '../pages/sidebar/PopularProducts';
 
@@ -11,6 +12,9 @@ export const Sidebar = (props) => {
             <Nav variant="pills" className="flex-column">
               <h3>Product Categories</h3>
               <Nav.Item>
+                <Nav.Link eventKey="AllProducts">All Products</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Nav.Link eventKey="NewProducts">New Products</Nav.Link>
               </Nav.Item>
               <Nav.Item>
@@ -20,6 +24,9 @@ export const Sidebar = (props) => {
           </Col>
           <Col sm={9}>
             <Tab.Content>
+              <Tab.Pane eventKey="AllProducts">
+                <AllProducts />
+              </Tab.Pane>
               <Tab.Pane eventKey="NewProducts">
                 <NewProducts />
               </Tab.Pane>

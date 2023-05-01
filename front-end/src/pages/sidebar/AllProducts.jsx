@@ -1,16 +1,17 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { Row, Col, Card } from 'react-bootstrap';
 
-const PopularProducts = () => {
+
+const AllProducts = () => {
 
     const products = useLoaderData();
 
     return (
             <div className="products">
-                <h1>Popular Products</h1>
+                <h1>New Products</h1>
                 <Row className='my-3'>
                     { products.map((product) => (
-                        product.isEnabled && product.categories === 'popular' && (
+                        product.isEnabled && (
                         <Col key={ product.id } sm={12} md={6} lg={4} xl={3}>
                             <Card as={ Link } to={`/products/${product.id}`} className="text-reset text-decoration-none">
                                 <Card.Img variant="top" src={ product.image } />
@@ -26,4 +27,4 @@ const PopularProducts = () => {
     );
 };
 
-export default PopularProducts;
+export default AllProducts;
