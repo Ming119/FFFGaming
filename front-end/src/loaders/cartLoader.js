@@ -16,9 +16,10 @@ export const cartLoader = async () => {
     const user = await getDoc(doc(db, "users", userId));
     const cart = user.data().cart;
 
-    if (!cart || cart.length === 0)return [];
+    if (!cart || cart.length === 0) return [];
 
     const data = cart.map(async (item) => {
+        const product = await getDoc(doc(db, "products", item.productId));
 
         const imageRef = ref(storage, `${item.productId}/0.jpg`);
         const blob = await getBlob(imageRef);
@@ -34,6 +35,7 @@ export const cartLoader = async () => {
         
         return {
             ...item,
+            price: product.data().price,
             image: imageUrl,
         };
     });
