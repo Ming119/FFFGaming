@@ -14,6 +14,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Checkout from "./pages/Checkout";
 import ContactUs from "./pages/contactUs/ContactUs";
 import ForgetPassword from "./pages/ForgetPassword";
 import EmailVerification from "./pages/EmailVerification";
@@ -75,6 +76,8 @@ export const router = createBrowserRouter(
 				action={ updateProfileAction } />
 			<Route path="contactus"
 				element={<ContactUs />} />
+			<Route path="checkout"
+				element={<Checkout />} />
 
 			<Route path="products">
 				<Route index
