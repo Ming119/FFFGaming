@@ -79,6 +79,7 @@ export const RootLayout = () => {
 					)}
 					</Nav>
 					<Nav>
+						<Nav.Link as={ Link } to="contactus">聯絡我們</Nav.Link>
 						{ user ? (
 							<>
 							<Nav.Link as={ Link } to="cart"><CartFill /></Nav.Link>

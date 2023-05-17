@@ -29,7 +29,7 @@ export const Sidebar = (props) => {
                   aria-expanded={open}          
                 >
                   {open ? <i class="bi bi-chevron-down"></i> : <i class="bi bi-chevron-right"></i>}
-                  <span>3C Products</span>
+                  <span>&nbsp;3C Products</span>
                 </Nav.Link>
                 <Collapse in={open}>
                   <div>
