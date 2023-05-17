@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Nav, NavDropdown, Row, Tab, Button, Collapse } from 'react-bootstrap';
+import { Col, Nav, Row, Tab, Collapse } from 'react-bootstrap';
 import AllProducts from '../pages/sidebar/AllProducts';
 import NewProducts from '../pages/sidebar/NewProducts';
 import PopularProducts from '../pages/sidebar/PopularProducts';

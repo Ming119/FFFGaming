@@ -8,7 +8,7 @@ const AllProducts = () => {
 
     return (
             <div className="products">
-                <h1>All Products</h1>
+                <h1>New Products</h1>
                 <Row className='my-3'>
                     { products.map((product) => (
                         product.isEnabled && (

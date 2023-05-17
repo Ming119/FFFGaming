@@ -1,7 +1,6 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { Row, Col, Card } from 'react-bootstrap';
 
-
 const NewProducts = () => {
 
     const products = useLoaderData();
