@@ -93,7 +93,3 @@ export const Checkout = () => {
 };
 
 export default Checkout;
-
-const generateSha1 = (WebNo, OrderNo, TotalPrice) => {
-	
-};
