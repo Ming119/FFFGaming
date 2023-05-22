@@ -9,12 +9,10 @@ import RootLayout from "./layouts/RootLayout";
 
 // Pages
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import Checkout from "./pages/Checkout";
 import ContactUs from "./pages/contactUs/ContactUs";
 import ForgetPassword from "./pages/ForgetPassword";
 import EmailVerification from "./pages/EmailVerification";
@@ -31,6 +29,10 @@ import ManageUsers from "./pages/manage/users/ManageUsers";
 import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 // orders pages
 import ManageOrders from "./pages/manage/ManageOrders";
+// cart/checkout pages
+import Cart from "./pages/cart/Cart";
+import Checkout from "./pages/cart/Checkout";
+import CheckoutSuccess from "./pages/cart/CheckoutSuccess";
 
 // Loaders
 import cartLoader from "./loaders/cartLoader";
@@ -78,6 +80,8 @@ export const router = createBrowserRouter(
 				element={<ContactUs />} />
 			<Route path="checkout"
 				element={<Checkout />} />
+			<Route path="checkout/success"
+				element={<CheckoutSuccess />} />
 
 			<Route path="products">
 				<Route index

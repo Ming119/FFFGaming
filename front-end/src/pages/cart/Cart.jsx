@@ -53,7 +53,7 @@ export const Cart = () => {
 
     const onCheckoutButtonClick = () => {
         if (rowSelection.length === 0) return;
-        navigate('/checkout', { state: { checkoutItems: cartItems.filter(item => rowSelection.includes(item.id)) } });
+        navigate('/checkout', { state: { time: Date.now(), totalPrice: totalPrice, rowSelection: rowSelection }});
     };
 
     useEffect(() => {
