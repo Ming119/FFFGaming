@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Button, Image } from "react-bootstrap";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 export const Cart = () => {
 
+    const navigate = useNavigate();
     const [ totalPrice, setTotalPrice ] = useState(0);
     const [ cartItems, setCartItems ] = useState(useLoaderData());
     const [ rowSelection, setRowSelection ] = useState([]);
@@ -48,6 +49,11 @@ export const Cart = () => {
 
     const onDeleteButtonClick = (id) => {
         setCartItems(cartItems.filter((item) => item.id !== id));
+    };
+
+    const onCheckoutButtonClick = () => {
+        if (rowSelection.length === 0) return;
+        navigate('/checkout', { state: { time: Date.now(), totalPrice: totalPrice, rowSelection: rowSelection }});
     };
 
     useEffect(() => {
@@ -135,7 +141,7 @@ export const Cart = () => {
             <div className="total-price">
                 <h3>總計：{ totalPrice }</h3>
 
-                <Button className="btn btn-primary">結帳</Button>
+                <Button className="btn btn-primary" onClick={ onCheckoutButtonClick }>結帳</Button>
 
             </div>
         </div>
