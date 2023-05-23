@@ -28,7 +28,7 @@ import CreateUser from "./pages/manage/users/CreateUser";
 import ManageUsers from "./pages/manage/users/ManageUsers";
 import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 // orders pages
-import ManageOrders from "./pages/manage/ManageOrders";
+import ManageOrders from "./pages/manage/orders/ManageOrders";
 // cart/checkout pages
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/cart/Checkout";
@@ -37,6 +37,7 @@ import CheckoutSuccess from "./pages/cart/CheckoutSuccess";
 // Loaders
 import cartLoader from "./loaders/cartLoader";
 import usersLoader from "./loaders/usersLoader";
+import ordersLoader from "./loaders/ordersLoader";
 import productsLoader from "./loaders/productsLoader";
 import userDetailsLoader from "./loaders/userDetailsLoader";
 import productDetailsLoader from "./loaders/productDetailsLoader";
@@ -109,11 +110,10 @@ export const router = createBrowserRouter(
 						action={ updateProductAction } />
 				</Route>
 
-				<Route
-					path="orders"
-					element={<ManageOrders />}
-					// loader={ ManageOrdersLoader }
-				>
+				<Route path="orders" >
+					<Route index
+						element={<ManageOrders />}
+						loader={ ordersLoader } />
 					{/* <Route
 						path=":id"
 						element={<ManageOrderDetails />}
