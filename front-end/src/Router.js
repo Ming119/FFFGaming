@@ -83,6 +83,7 @@ export const router = createBrowserRouter(
 			<Route path="checkout/success"
 				element={<CheckoutSuccess />} />
 
+
 			<Route path="products">
 				<Route index
 					element={<Products />}
