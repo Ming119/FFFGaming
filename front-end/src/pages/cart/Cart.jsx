@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { FloatingLabel } from '../../components/FloatingLabel';
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Button, Image, Row, Col, InputGroup, Form } from "react-bootstrap";
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
@@ -85,15 +84,14 @@ export const Cart = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            docSnap.data().allowed.forEach((uid) => {
-                if (uid === auth.currentUser.uid || uid === "all") {
+            console.log();
+            if (docSnap.data().allowed.includes(auth.currentUser.uid) || docSnap.data().allowed.includes("all")) {
                     console.log("Query data:", docSnap.data());
                     setTotalPrice(totalPrice * docSnap.data().discount);
                     setDCFieldEnabled(true);
                 } else {
                     console.log("Don't have allow");
                 }
-            });
         } else {
             console.log("No such document!");
         }
