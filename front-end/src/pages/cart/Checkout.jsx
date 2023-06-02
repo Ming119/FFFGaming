@@ -40,6 +40,7 @@ export const Checkout = () => {
       user: auth.currentUser.uid,
       orderNo: orderNo,
       time: time,
+      state: "0",
       payType: payType,
       totalPrice: totalPrice,
       OrderInfo: rowSelection,

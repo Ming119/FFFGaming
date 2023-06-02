@@ -95,7 +95,7 @@ export const ManageUsers = () => {
             columns={ tableColumns }
             checkboxSelection
             disableRowSelectionOnClick
-            onRowSelectionModelChange={ (newSelection) => {
+            onRowSelectionModelChange={ newSelection => {
                 setRowSelection(newSelection);
             } }
         />
