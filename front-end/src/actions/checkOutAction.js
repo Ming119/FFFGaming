@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { redirect } from 'react-router-dom';
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 export const checkOutAction = async ({ request }) => {
     const data = await request.formData();
@@ -19,8 +19,6 @@ export const checkOutAction = async ({ request }) => {
     const p = products.map(item => {
         return JSON.parse(item);
     });
-
-    console.log(p);
 
     const auth = getAuth();
     const db = getFirestore();
@@ -41,9 +39,7 @@ export const checkOutAction = async ({ request }) => {
     }).then(async () => {
         const user = await getDoc(doc(db, "users", auth.currentUser.uid));
         let cart = user.data().cart;
-        cart = cart.filter(item => {
-            return !products.includes(JSON.stringify(item));
-        });
+        cart = cart.filter(item => !p.some(p => p.id === item.id));
         await setDoc(doc(db, "users", auth.currentUser.uid), {
             cart: cart
         }, { merge: true });
