@@ -1,60 +1,77 @@
 import { useState } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
-import { useNavigate, useLocation } from 'react-router';
+import { Button, Col, Row } from 'react-bootstrap';
+import { Form, useLocation } from 'react-router-dom';
 import { FloatingLabel } from "../../components/FloatingLabel";
-import { doc, setDoc, getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import sha1 from "js-sha1";
 
+const _711data = require("../../storeData/7-11_store.json");
+const _familydata = require("../../storeData/family_store.json");
+
 export const Checkout = () => {
-  const webNo = "A980016741";
-  const navigate = useNavigate();
   const location = useLocation();
   const time = location.state && location.state.time;
   const totalPrice = location.state && location.state.totalPrice;
-  const rowSelection = location.state && location.state.rowSelection;
+  const products = location.state && location.state.products;
+  const discountCode = location.state && location.state.discountCode;
   const user = JSON.parse(localStorage.getItem('user'));
   const orderNo = sha1(user.id + time);
-  const [ passCode, setPassCode ] = useState("");
+
   const [ payType, setPayType ] = useState("00");
-  const [ receiverID, setReceiverID ] = useState("");
-  const [ receiverTel, setReceiverTel ] = useState("");
-  const [ receiverName, setReceiverName ] = useState("");
-  const [ receiverNote, setReceiverNote ] = useState("");
-  const [ receiverEmail, setReceiverEmail ] = useState("");
-  const [ receiverAddress, setReceiverAddress ] = useState("");
+  const [ pickupType, setPickupType ] = useState("711");
 
-  const onFormChange = () => {
-    setPassCode(sha1(webNo + orderNo + totalPrice + "Xraypad520"));
-  };
+  const [ city, setCity ] = useState("縣市");
+  const [ district, setDistrict ] = useState("行政區");
+  const [ districtList, setDistrictList ] = useState([]);
+  const [ store, setStore ] = useState("門市");
+  const [ storeList, setStoreList ] = useState([]);
 
-  const onFormSubmit = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    console.log(e.target);
-    const db = getFirestore();
-    const auth = getAuth();
-    const orderRef = doc(db, "orders", orderNo);
-    const order = {
-      user: auth.currentUser.uid,
-      orderNo: orderNo,
-      time: time,
-      state: "0",
-      payType: payType,
-      totalPrice: totalPrice,
-      OrderInfo: rowSelection,
-      receiverID: receiverID,
-      receiverTel: receiverTel,
-      receiverNote: receiverNote,
-      receiverName: receiverName,
-      receiverEmail: receiverEmail,
-      receiverAddress: receiverAddress,
-    };
-    setDoc(orderRef, order);
+  const onCitySelect = e => {
+    setCity(e.target.value);
+    setDistrictList(Object.keys(_711data[e.target.value]));
+  }
 
-    if (payType == "00") navigate("/checkout/success");
-    else e.currentTarget.submit();
+  const onDistrictSelect = e => {
+    setDistrict(e.target.value);
+    setStoreList(_711data[city][e.target.value]);
+  }
+
+  const onStoreSelect = e => { setStore(e.target.value); }
+
+  const StoreSelection = () => {
+    const cityList = Object.keys(_711data);
+
+    return (
+      <div>
+        <h2>取貨門市</h2>
+        <Row className='my-3'>
+          <Col>
+            <select className="form-select" onChange={ onCitySelect } value={ city }>
+              <option disabled>縣市</option>
+              { cityList.map((city, index) => (
+                <option key={index} value={city}>{city}</option>
+              )) }
+            </select>
+          </Col>
+          <Col>
+            { city !== "縣市" &&
+              <select className="form-select" onChange={ onDistrictSelect } value={ district }>
+                <option disabled>行政區</option>
+                { districtList.map((district, index) => (
+                  <option key={index} value={district}>{district}</option>
+                )) }
+              </select> }
+          </Col>
+        </Row>
+        
+        { city !== "縣市" && district !== "行政區" &&
+          <select name="receiveStore" className="form-select" onChange={ onStoreSelect } value={ store }>
+            <option disabled>門市</option>
+            { storeList.map((store, index) => (
+              <option key={index} value={store.店號}>{store.店號} {store.店名} {store.地址}</option>
+            )) }
+          </select> }
+      </div>
+    );
   }
 
   return (
@@ -65,47 +82,62 @@ export const Checkout = () => {
 
       <hr />
 
-      <h2>付款方式</h2>
-      <div className="form-check form-check-inline">
-        <input className="form-check-input" type="radio" name="PayType" id="payType_COD" defaultChecked 
-          onClick={ _ => setPayType("00") }/>
-        <label className="form-check-label" htmlFor="payType_COD">貨到付款</label>
-      </div>
-      <div className="form-check form-check-inline">
-        <input className="form-check-input" type="radio" name="PayType" id="payType_creditCard"
-          onClick={ _ => setPayType("01") }/>
-        <label className="form-check-label" htmlFor="payType_creditCard">信用卡</label>
-      </div>
+      <Row>
+        <Col>
+        <h2>付款方式</h2>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" name="payType" id="payType_COD"
+              onClick={ _ => setPayType("00") } defaultChecked/>
+            <label className="form-check-label" htmlFor="payType_COD">貨到付款</label>
+          </div>
+          {/* <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" name="payType" id="payType_creditCard"
+              onClick={ _ => setPayType("01") } value="01" />
+            <label className="form-check-label" htmlFor="payType_creditCard">信用卡</label>
+          </div> */}
+        </Col>
+        <Col>
+          <h2>取貨方式</h2>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" name="pickupType" id="pickupType_store711"
+              onClick={ _ => setPickupType("00") } defaultChecked/>
+            <label className="form-check-label" htmlFor="pickupType_store">7-11超商取貨</label>
+          </div>
+          {/* <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" name="pickupType" id="pickupType_home" />
+            <label className="form-check-label" htmlFor="pickupType_home">宅配</label>
+          </div> */}
+        </Col>
+      </Row>
 
       <hr />
 
-      <Form action={ payType === "01" ? 'https://test.paynow.com.tw/service/etopm.aspx' : '' }
-        method="POST" onChange={ onFormChange } onSubmit={ e => onFormSubmit(e) }>
-        <input type="hidden" name="WebNo" value={ webNo } />
-        <input type="hidden" name="ECPlatform" value="FFFGaming" />
-        <input type="hidden" name="EPT" value="01" />
-        <input type="hidden" name="OrderNo" value={ orderNo } />
-        <input type="hidden" name="TotalPrice" value={ totalPrice } />
-        <input type="hidden" name="PassCode" value={ passCode } />
-        <input type="hidden" name="OrderInfo" value={ rowSelection } />
+      <Form method="POST">
+        <input type="hidden" name="orderNo" value={ orderNo } />
+        <input type="hidden" name="totalPrice" value={ totalPrice } />
+        <input type="hidden" name="discountCode" value={ discountCode } />
         <input type="hidden" name="PayType" value={ payType } />
+        <input type="hidden" name="PickupType" value={ pickupType } />
+        { products.map((item, index) => (
+          <input key={index} type="hidden" name="products" value={ JSON.stringify(item) } />
+        )) }
 
-        <h2>送貨資訊</h2>
-        <FloatingLabel name="ReceiverName" label="收件人姓名" type="text" placeholder="請輸入收件人姓名"
-          onChange={ e => setReceiverName(e.target.value) } value={ receiverName } />
-        <FloatingLabel name="ReceiverAddress" label="收件人地址" type="text" placeholder="請輸入收件人地址"
-          onChange={ e => setReceiverAddress(e.target.value) } value={ receiverAddress } />
-        <FloatingLabel name="ReceiverID" label="收件人身分證字號" type="text" placeholder="請輸入收件人身分證字號"
-          onChange={ e => setReceiverID(e.target.value) } value={ receiverID } />
-        <FloatingLabel name="ReceiverTel" label="收件人電話" type="tel" placeholder="請輸入收件人電話"
-          onChange={ e => setReceiverTel(e.target.value) } value={ receiverTel } />
-        <FloatingLabel name="ReceiverEmail" label="收件人電子信箱" type="email" placeholder="請輸入收件人電子信箱"
-          onChange={ e => setReceiverEmail(e.target.value) } value={ receiverEmail } />
+        <StoreSelection />
 
-        <hr />
-        <h2>備註</h2>
-        <FloatingLabel name="Note1" label="備註" type="text" placeholder="請輸入備註"
-          onChange={ e => setReceiverNote(e.target.value) } value={ receiverNote } />
+        <Row className='my-3'>
+          <Col xs={6}>
+            <FloatingLabel name="receiverName" label="取件人姓名" type="text" placeholder="請輸入取件人姓名" />
+          </Col>
+          <Col xs={6}>
+            <FloatingLabel name="receiverTel" label="取件人手機" type="tel" placeholder="請輸入取件人手機" />
+          </Col>
+          <Col xs={6}>
+            <FloatingLabel name="receiverEmail" label="取件人Email" type="tel" placeholder="請輸入取件人Email" />
+          </Col>
+          <Col xs={6}>
+            <FloatingLabel name="receiverNote" label="備註" type="text" placeholder="請輸入備註" />
+          </Col>
+        </Row>
         
         <Row className='my-3'>
           <Button variant="primary" type='submit'>送出</Button>

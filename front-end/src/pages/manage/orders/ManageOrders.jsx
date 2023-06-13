@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DataGrid } from '@mui/x-data-grid';
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 export const ManageOrders = () => {
 	const [orders, setOrders] = useState(useLoaderData());
@@ -17,11 +18,14 @@ export const ManageOrders = () => {
 			}
 		}, {
 			field: 'status', headerName: '訂單狀態', flex: 1,
-			valueGetter: (params) => {
-				if (params.row.payType === '0') return '未發貨';
-				else if (params.row.payType === '1') return '已發貨'; 
+		}, {
+			field: '', headerName: '操作', flex: 1,
+			renderCell: (params) => {
+				return (
+                    <Button as={ Link } to={`${params.row.id}`}>詳細</Button>
+                );
 			}
-		},
+		}
 	];
 	
 	return (
