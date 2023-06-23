@@ -29,6 +29,7 @@ import ManageUsers from "./pages/manage/users/ManageUsers";
 import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 // orders pages
 import ManageOrders from "./pages/manage/orders/ManageOrders";
+import ManageOrderDetails from "./pages/manage/orders/ManageOrderDetails";
 // cart/checkout pages
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/cart/Checkout";
@@ -41,10 +42,12 @@ import ordersLoader from "./loaders/ordersLoader";
 import productsLoader from "./loaders/productsLoader";
 import userDetailsLoader from "./loaders/userDetailsLoader";
 import productDetailsLoader from "./loaders/productDetailsLoader";
+import orderDetailsLoader from "./loaders/orderDetailsLoader";
 
 // Actions
 import signInAction from "./actions/signInAction";
 import signUpAction from "./actions/signUpAction";
+import checkOutAction from "./actions/checkOutAction";
 import addToCartAction from "./actions/addToCartAction";
 import createUserAction from "./actions/createUserAction";
 import updateUserAction from "./actions/updateUserAction";
@@ -80,7 +83,8 @@ export const router = createBrowserRouter(
 			<Route path="contactus"
 				element={<ContactUs />} />
 			<Route path="checkout"
-				element={<Checkout />} />
+				element={<Checkout />}
+				action={ checkOutAction }/>
 			<Route path="checkout/success"
 				element={<CheckoutSuccess />} />
 
@@ -114,11 +118,11 @@ export const router = createBrowserRouter(
 					<Route index
 						element={<ManageOrders />}
 						loader={ ordersLoader } />
-					{/* <Route
+					<Route
 						path=":id"
 						element={<ManageOrderDetails />}
-						loader={ ManageOrderDetailsLoader }
-					/> */}
+						loader={ orderDetailsLoader }
+					/>
 				</Route>
 
 				<Route path="users">
