@@ -2,13 +2,13 @@ import { Link, useLoaderData } from "react-router-dom";
 import { Row, Col, Card } from 'react-bootstrap';
 
 
-const AllProducts = () => {
+const AllProducts = (props) => {
 
     const products = useLoaderData();
 
     return (
             <div className="products">
-                <h1>New Products</h1>
+                <h1>{props.title}</h1>
                 <Row className='my-3'>
                     { products.map((product) => (
                         product.isEnabled && (
