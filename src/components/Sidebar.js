@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
-import { Col, Nav, Row, Tab, Collapse } from 'react-bootstrap';
+import { Col, Nav, Row, Tab } from 'react-bootstrap';
 import '../assets/css/sidebar.css';
-import AllProducts from '../pages/sidebar/AllProducts';
-import MouseProducts from '../pages/sidebar/MouseProducts';
-import PopularProducts from '../pages/sidebar/PopularProducts';
 import Products from '../pages/sidebar/Products';
 
 
