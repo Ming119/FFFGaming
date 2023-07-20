@@ -23,10 +23,6 @@ main {
   border-radius: 0;
 }
 
-.btn {
-  width: 200px;
-}
-
 .btn-no-toggle {
   display: inline-flex;
   align-items: center;
