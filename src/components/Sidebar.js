@@ -6,7 +6,7 @@ import { useLoaderData } from 'react-router-dom';
 
 export const Sidebar = (props) => {
 
-  const { categories } = useLoaderData();
+  const { categories, products } = useLoaderData();
   const [activeTab, setActiveTab] = useState('AllProducts');
 
   const handleTabChange = (eventKey) => {
@@ -42,7 +42,7 @@ export const Sidebar = (props) => {
                     <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                       { category.sub.map((subcategory) => (
                         <li>
-                          <Nav.Link className="link-dark rounded" eventKey={`${category.name}_${subcategory.name}`}>{subcategory.name}</Nav.Link>
+                          <Nav.Link className="link-dark rounded" eventKey={`${category.id}_${subcategory.id}`}>{subcategory.name}</Nav.Link>
                         </li>
                       ))}
                     </ul>
@@ -65,12 +65,14 @@ export const Sidebar = (props) => {
           <Col sm={9}>
             <Tab.Content>
               <Tab.Pane eventKey="AllProducts">
-                <Products title={"全部產品"} />
+                <Products title={"全部產品"} products={ products }/>
               </Tab.Pane>
               { categories.map((category) => (
                 category.sub.map((subcategory) => (
-                  <Tab.Pane eventKey={`${category.name}_${subcategory.name}`}>
-                    <Products title={`${category.name} - ${subcategory.name}`} />
+                  <Tab.Pane eventKey={`${category.id}_${subcategory.id}`}>
+                    <Products
+                      title={`${category.name} - ${subcategory.name}`}
+                      products={ products.filter(product => product.category === `${category.id}_${subcategory.id}`) }/>
                   </Tab.Pane>
                 ))
               )) }
