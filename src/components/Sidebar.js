@@ -28,7 +28,7 @@ export const Sidebar = (props) => {
                 </Nav.Link>
               </Nav.Item>
               { categories.map((category) => (
-                <Nav.Item className="mb-1">
+                <Nav.Item className="mb-1" key={category.id}>
                   <Nav.Link
                     as="button"
                     className="btn btn-toggle align-items-center rounded collapsed"
@@ -41,7 +41,7 @@ export const Sidebar = (props) => {
                   <div className="collapse show" id={`collapse${category.id}`}>
                     <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                       { category.sub.map((subcategory) => (
-                        <li>
+                        <li key={`${category.id}_${subcategory.id}`}>
                           <Nav.Link className="link-dark rounded" eventKey={`${category.id}_${subcategory.id}`}>{subcategory.name}</Nav.Link>
                         </li>
                       ))}
@@ -69,7 +69,7 @@ export const Sidebar = (props) => {
               </Tab.Pane>
               { categories.map((category) => (
                 category.sub.map((subcategory) => (
-                  <Tab.Pane eventKey={`${category.id}_${subcategory.id}`}>
+                  <Tab.Pane eventKey={`${category.id}_${subcategory.id}`} key={`${category.id}_${subcategory.id}`}>
                     <Products
                       title={`${category.name} - ${subcategory.name}`}
                       products={ products.filter(product => product.category === `${category.id}_${subcategory.id}`) }/>
