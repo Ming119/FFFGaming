@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
-import { Button, Image } from "react-bootstrap";
-import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { Button, Image, Row, Col, InputGroup, Form } from "react-bootstrap";
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 export const Cart = () => {
@@ -11,6 +11,9 @@ export const Cart = () => {
     const [ totalPrice, setTotalPrice ] = useState(0);
     const [ cartItems, setCartItems ] = useState(useLoaderData());
     const [ rowSelection, setRowSelection ] = useState([]);
+    const [ discountCodeField, setDiscountCodeField ] = useState('');
+    const [ dcFieldEnabled, setDCFieldEnabled ] = useState(false);
+    const [ oriTotalPrice, setOriTotalPrice ] = useState(0);
 
     const commitCartItems = async () => {
         const auth = getAuth();
@@ -66,6 +69,33 @@ export const Cart = () => {
     useEffect(() => {
         commitCartItems();
     }, [cartItems]);
+
+
+    const useDiscountCode = () => {
+        setOriTotalPrice(totalPrice);
+        getDiscount();
+    }
+
+    const getDiscount = async () => {
+        const auth = getAuth();
+        const db = getFirestore();
+
+        const docRef = doc(db, "discountCodes", discountCodeField);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            console.log();
+            if (docSnap.data().allowed.includes(auth.currentUser.uid) || docSnap.data().allowed.includes("all")) {
+                    console.log("Query data:", docSnap.data());
+                    setTotalPrice(totalPrice * docSnap.data().discount);
+                    setDCFieldEnabled(true);
+                } else {
+                    console.log("Don't have allow");
+                }
+        } else {
+            console.log("No such document!");
+        }
+    }
 
     const tableColumns = [
         {
@@ -139,6 +169,31 @@ export const Cart = () => {
             />
 
             <div className="total-price">
+                <Row className="my-3" xs={2} md={4} lg={6}>
+                    <Col xs="auto" md="auto" lg="auto">
+                        <h3>折扣碼：</h3>
+                    </Col>
+                    <Col xs="auto" md={3} lg={3}>
+                        <InputGroup className="mb-3">
+                            <Form.Control
+                                aria-label="折扣碼"
+                                aria-describedby="basic-addon2"
+                                id="discountCode"
+                                value={discountCodeField}
+                                onChange={(e) => {
+                                        setDiscountCodeField(e.target.value);
+                                        setDCFieldEnabled(false);
+                                        if (dcFieldEnabled) {
+                                            setTotalPrice(oriTotalPrice);
+                                        }
+                                    }
+                                }
+                            />
+                            <Button variant="outline-primary" id="button-addon2" onClick={ useDiscountCode } disabled={ dcFieldEnabled }>使用折扣碼</Button>
+                        </InputGroup>
+                    </Col>
+                </Row>
+
                 <h3>總計：{ totalPrice }</h3>
 
                 <Button className="btn btn-primary" onClick={ onCheckoutButtonClick }>結帳</Button>

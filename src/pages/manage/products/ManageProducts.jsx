@@ -8,7 +8,7 @@ export const ManageProducts = () => {
 
     const [ rowSelection, setRowSelection ] = useState([]);
     const [ products, setProducts ] = useState(useLoaderData());
-
+    
     useEffect(() => {
         if (rowSelection.length > 0) {
             document.querySelector('#enableBtn').disabled = false;
