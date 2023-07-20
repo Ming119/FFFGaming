@@ -42,6 +42,7 @@ import ordersLoader from "./loaders/ordersLoader";
 import productsLoader from "./loaders/productsLoader";
 import userDetailsLoader from "./loaders/userDetailsLoader";
 import orderDetailsLoader from "./loaders/orderDetailsLoader";
+import createProductLoader from "./loaders/createProductLoader";
 import productDetailsLoader from "./loaders/productDetailsLoader";
 import productsManageLoader from "./loaders/productsManageLoader";
 
@@ -107,7 +108,10 @@ export const router = createBrowserRouter(
 					<Route index
 						element={<ManageProducts />}
 						loader={ productsManageLoader } />
-					<Route path="create" element={<CreateProduct />} action={ createProductAction }/>
+					<Route path="create"
+						element={<CreateProduct />}
+						loader={ createProductLoader }
+						action={ createProductAction }/>
 					<Route
 						path=":id"
 						element={<ManageProductDetails />}
