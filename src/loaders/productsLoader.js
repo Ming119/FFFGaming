@@ -5,6 +5,12 @@ export const productsLoader = async () => {
     const db = getFirestore();
     const storage = getStorage();
 
+    const categoriesSnapshot = await getDocs(collection(db, "category"));
+    const categories = categoriesSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+    }));
+
     const productsSnapshot = await getDocs(collection(db, "products"));
     const products = productsSnapshot.docs.map(async (doc) => {
         
@@ -29,7 +35,10 @@ export const productsLoader = async () => {
         };
     });
 
-    return Promise.all(products);
+    return {
+        categories,
+        products: await Promise.all(products),
+    };
 }
 
 export default productsLoader;
