@@ -8,7 +8,7 @@ export const createProductAction = async ({ request }) => {
     
     const name = data.get('productName');
     const price = data.get('price');
-    const countInStock = data.get('countInStock');
+    const category = data.get('category');
     const correspondingImage = data.get('correspondingImage');
 
     let attributesCount = 0;
@@ -28,7 +28,7 @@ export const createProductAction = async ({ request }) => {
 
     if (!name) return { message: "Product name is required.", variant: "danger" };
     if (!price) return { message: "Price is required.", variant: "danger" };
-    if (!countInStock) return { message: "Count in stock is required.", variant: "danger" };
+    if (!category) return { message: "Category is required.", variant: "danger" };
     if (!coverImage) return { message: "Cover image is required.", variant: "danger" };
     if (correspondingImage && attributesCount !== images.length+1) return { message: "Number of images must be equal to number of values for corresponding attribute.", variant: "danger" };
 
@@ -36,7 +36,7 @@ export const createProductAction = async ({ request }) => {
     const newProduct = await addDoc(collection(db, "products"), {
         name,
         price,
-        countInStock,
+        category,
         richText,
         createdAt: new Date(),
         isEnabled: true,
