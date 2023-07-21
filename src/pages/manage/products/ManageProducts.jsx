@@ -31,11 +31,6 @@ export const ManageProducts = () => {
                 return params.row.price || '未設定';
             },
         }, {
-            field: 'countInStock', headerName: '庫存', flex: 1,
-            valueGetter: (params) => {
-                return params.row.countInStock || '未設定';
-            },
-        }, {
             field: 'isEnabled', headerName: '已上架', flex: 1,
             valueGetter: (params) => {
                 return params.row.isEnabled ? '✔️' : '❌';
