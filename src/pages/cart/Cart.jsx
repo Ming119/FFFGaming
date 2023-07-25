@@ -9,11 +9,13 @@ export const Cart = () => {
 
     const navigate = useNavigate();
     const [ totalPrice, setTotalPrice ] = useState(0);
+    const [ discountPrice, setDiscountPrice ] = useState(totalPrice);
     const [ cartItems, setCartItems ] = useState(useLoaderData());
     const [ rowSelection, setRowSelection ] = useState([]);
-    const [ discountCodeField, setDiscountCodeField ] = useState('');
-    const [ dcFieldEnabled, setDCFieldEnabled ] = useState(false);
-    const [ oriTotalPrice, setOriTotalPrice ] = useState(0);
+    const [ discountCode, setDiscountCode ] = useState('');
+    const [ dcFieldDisable, setDCFieldDisable ] = useState(false);
+    const [ discountCodeError, setDiscountError ] = useState('');
+    const [ discountPresent, setDiscountPresent ] = useState(0);
 
     const commitCartItems = async () => {
         const auth = getAuth();
@@ -72,7 +74,6 @@ export const Cart = () => {
 
 
     const useDiscountCode = () => {
-        setOriTotalPrice(totalPrice);
         getDiscount();
     }
 
@@ -80,22 +81,32 @@ export const Cart = () => {
         const auth = getAuth();
         const db = getFirestore();
 
-        const docRef = doc(db, "discountCodes", discountCodeField);
+        const docRef = doc(db, "discountCodes", discountCode);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            console.log();
             if (docSnap.data().allowed.includes(auth.currentUser.uid) || docSnap.data().allowed.includes("all")) {
-                    console.log("Query data:", docSnap.data());
-                    setTotalPrice(totalPrice * docSnap.data().discount);
-                    setDCFieldEnabled(true);
-                } else {
-                    console.log("Don't have allow");
-                }
+                setDiscountError('');
+                setDCFieldDisable(true);
+                setDiscountPresent(docSnap.data().discount);
+            } else {
+                setDiscountError("Don't have allow");
+            }
         } else {
-            console.log("No such document!");
+            setDiscountError("No such document!");
         }
     }
+
+    const resetDiscountCode = () => {
+        setDCFieldDisable(false);
+        setDiscountCode('');
+        setDiscountError('');
+        setDiscountPresent(0);
+    }
+
+    useEffect(() => {
+        setDiscountPrice(totalPrice * (1 - discountPresent));
+    }, [totalPrice, discountPresent]);
 
     const tableColumns = [
         {
@@ -177,24 +188,25 @@ export const Cart = () => {
                         <InputGroup className="mb-3">
                             <Form.Control
                                 aria-label="折扣碼"
-                                aria-describedby="basic-addon2"
                                 id="discountCode"
-                                value={discountCodeField}
-                                onChange={(e) => {
-                                        setDiscountCodeField(e.target.value);
-                                        setDCFieldEnabled(false);
-                                        if (dcFieldEnabled) {
-                                            setTotalPrice(oriTotalPrice);
-                                        }
-                                    }
+                                value={ discountCode }
+                                onChange={(e) => { setDiscountCode(e.target.value); }
                                 }
+                                disabled={ dcFieldDisable }
                             />
-                            <Button variant="outline-primary" id="button-addon2" onClick={ useDiscountCode } disabled={ dcFieldEnabled }>使用折扣碼</Button>
+                            { dcFieldDisable ? 
+                                <Button variant="outline-warning" onClick={ resetDiscountCode }>修改折扣碼</Button>
+                                :
+                                <Button variant="outline-success" onClick={ useDiscountCode }>使用折扣碼</Button>
+                            }
                         </InputGroup>
+                    </Col>
+                    <Col xs="auto" md="auto" lg="auto">
+                        <h4 className="text-danger">{ discountCodeError }</h4>
                     </Col>
                 </Row>
 
-                <h3>總計：{ totalPrice }</h3>
+                <h3>總計：{ discountPresent ? discountPrice : totalPrice }</h3>
 
                 <Button className="btn btn-primary" onClick={ onCheckoutButtonClick }>結帳</Button>
 
