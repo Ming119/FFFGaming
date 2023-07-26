@@ -75,7 +75,7 @@ export const ProductDetails = () => {
 
                     <Row className="my-3">
                         <Col className="fs-6">
-                            數量<input type="number" name="quantity" id="quantity" min="1" max={ product.countInStock } value={ quantity } onChange={ (e) => { setQuantity(e.target.value) }} /> { `還剩 ${product.countInStock} 件` }
+                            數量<input type="number" name="quantity" id="quantity" min="1" value={ quantity } onChange={ (e) => { setQuantity(e.target.value) }} />
                         </Col>
                     </Row>
                     
