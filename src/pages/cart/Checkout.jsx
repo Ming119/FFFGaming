@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { Form, useLocation } from 'react-router-dom';
 import { FloatingLabel } from "../../components/FloatingLabel";
@@ -19,6 +19,7 @@ export const Checkout = () => {
   const [ payType, setPayType ] = useState("00");
   const [ pickupType, setPickupType ] = useState("711");
 
+  const [ storeData, setStoreData ] = useState(_711data);
   const [ city, setCity ] = useState("縣市");
   const [ district, setDistrict ] = useState("行政區");
   const [ districtList, setDistrictList ] = useState([]);
@@ -27,18 +28,18 @@ export const Checkout = () => {
 
   const onCitySelect = e => {
     setCity(e.target.value);
-    setDistrictList(Object.keys(_711data[e.target.value]));
+    setDistrictList(Object.keys(storeData[e.target.value]));
   }
 
   const onDistrictSelect = e => {
     setDistrict(e.target.value);
-    setStoreList(_711data[city][e.target.value]);
+    setStoreList(storeData[city][e.target.value]);
   }
 
   const onStoreSelect = e => { setStore(e.target.value); }
 
   const StoreSelection = () => {
-    const cityList = Object.keys(_711data);
+    const cityList = Object.keys(storeData);
 
     return (
       <div>
@@ -74,6 +75,19 @@ export const Checkout = () => {
     );
   }
 
+  useEffect(() => {
+    setCity("縣市");
+    setDistrict("行政區");
+    setStore("門市");
+    setDistrictList([]);
+    setStoreList([]);
+
+    if (pickupType === "711")
+      setStoreData(_711data);
+    else if (pickupType === "family")
+      setStoreData(_familydata);
+  }, [pickupType]);
+
   return (
     <div className='checkout'>
       <Row className="my-3">
@@ -100,8 +114,13 @@ export const Checkout = () => {
           <h2>取貨方式</h2>
           <div className="form-check form-check-inline">
             <input className="form-check-input" type="radio" name="pickupType" id="pickupType_store711"
-              onClick={ _ => setPickupType("00") } defaultChecked/>
+              onClick={ _ => setPickupType("711") } defaultChecked/>
             <label className="form-check-label" htmlFor="pickupType_store">7-11超商取貨</label>
+          </div>
+          <div className='form-check form-check-inline'>
+            <input className="form-check-input" type="radio" name="pickupType" id="pickupType_storeFamily"
+              onClick={ _ => setPickupType("family") } />
+            <label className="form-check-label" htmlFor="pickupType_store">全家超商取貨</label>
           </div>
           {/* <div className="form-check form-check-inline">
             <input className="form-check-input" type="radio" name="pickupType" id="pickupType_home" />

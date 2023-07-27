@@ -179,9 +179,6 @@ export const ManageProductDetails = () => {
 
                                 <Col><FloatingLabel type="number" name="price" id="price" value={ price }
                                     label="價格" onChange={ (e) => setPrice(e.target.value) }/></Col>
-
-                                <Col><FloatingLabel type="number" name="countInStock" id="countInStock" value={ countInStock }
-                                    label="庫存" onChange={ (e) => setCountInStock(e.target.value) }/></Col>
                             </Row>
                             
                             <ReactQuill 

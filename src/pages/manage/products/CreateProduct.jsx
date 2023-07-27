@@ -163,7 +163,7 @@ export const CreateProduct = () => {
 						</Row>
 
 						<FloatingLabel type="text" name="productName" id="productName" label="商品名稱" />
-						<FloatingLabel type="number" name="price" id="price" label="價格" />
+						<FloatingLabel type="number" name="price" id="price" label="價格" min="0" />
 
 						<select class="form-select my-3" name="category">
 							<option selected disabled>分類</option>
