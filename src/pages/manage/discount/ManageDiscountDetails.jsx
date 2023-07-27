@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
-import { Form, useNavigate, useLoaderData } from "react-router-dom";
+import { Form, useNavigate, useLoaderData, useActionData } from "react-router-dom";
 import { FloatingLabel } from "../../../components/FloatingLabel";
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
 
 export const ManageDiscountDetails = () => {
   const discount = useLoaderData();
+  const actionData = useActionData();
   const navigate = useNavigate();
 
   const [ discountCode, setDiscountCode ] = useState(discount.discountCode);
@@ -20,7 +21,7 @@ export const ManageDiscountDetails = () => {
   const onEditOrSaveBtnClick = e => {
     if (!isEditabled) {
       e.preventDefault();
-      setIsEditabled(!isEditabled);
+      setIsEditabled(true);
     }
   };
 
@@ -29,6 +30,11 @@ export const ManageDiscountDetails = () => {
     if (window.confirm('確定要刪除嗎？'))
       deleteDiscount().then(_ => navigate('/manage/discounts'));
   };
+
+  useEffect(_ => {
+    if (actionData && actionData.variant === 'success')
+      setIsEditabled(false);
+  }, [ actionData ]);
 
   return (
     <Form method="POST">

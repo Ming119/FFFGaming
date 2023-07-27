@@ -6,7 +6,6 @@ export const updateDiscountAction = async ({ request }) => {
   const discountCode = formData.get('discountCode');
   const discountPersentage = formData.get('discountPersentage');
   const isActive = formData.get('isActive');
-  console.log(id, discountCode, discountPersentage, isActive)
 
   if (!discountCode) return { message: "Discount code is required.", variant: "danger" };
 
