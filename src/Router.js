@@ -45,6 +45,8 @@ import orderDetailsLoader from "./loaders/orderDetailsLoader";
 import createProductLoader from "./loaders/createProductLoader";
 import productDetailsLoader from "./loaders/productDetailsLoader";
 import productsManageLoader from "./loaders/productsManageLoader";
+import discountCodesLoader from "./loaders/discountCodesLoader";
+import discountCodeDetailsLoader from "./loaders/discountCodeDetailsLoader";
 
 // Actions
 import signInAction from "./actions/signInAction";
@@ -57,9 +59,16 @@ import createProductAction from "./actions/createProductAction";
 import updateProductAction from "./actions/updateProductAction";
 import resetPasswordAction from "./actions/resetPasswordAction";
 import updateProfileAction from "./actions/updateProfileAction";
+import createDiscountCodeAction from "./actions/createDiscountCodeAction";
+import updateDiscountCodeAction from "./actions/updateDiscountCodeAction";
 
 // Errors
 import ProductDetailsError from "./errors/ProductDetailsError";
+
+// DiscountCodes pages
+import { ManageDiscountCodes } from "./pages/manage/discountCodes/ManageDiscountCodes";
+import { CreateDiscountCode } from "./pages/manage/discountCodes/CreateDiscountCode";
+import { ManageDiscountCodeDetails } from "./pages/manage/discountCodes/ManageDiscountCodeDetails";
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -138,6 +147,16 @@ export const router = createBrowserRouter(
 						element={<ManageUserDetails />}
 						loader={ userDetailsLoader }
 						action={ updateUserAction } />
+				</Route>
+
+				<Route path="discountcodes">
+					<Route index element={<ManageDiscountCodes />} loader={ discountCodesLoader } />
+					<Route path="create" element={<CreateDiscountCode />} action={ createDiscountCodeAction } />
+					<Route
+						path=":id"
+						element={<ManageDiscountCodeDetails />}
+						loader={ discountCodeDetailsLoader }
+						action={ updateDiscountCodeAction } />
 				</Route>
 			</Route>
 			
