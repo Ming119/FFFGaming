@@ -1,5 +1,4 @@
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
-import { redirect } from "react-router-dom";
 
 export const updateDiscountAction = async ({ request }) => {
   const formData = await request.formData();
@@ -20,6 +19,8 @@ export const updateDiscountAction = async ({ request }) => {
     discountPersentage: discountPersentage,
     isActive: isActive === "on" ? true : false,
   });
+
+  return { message: "Discount code updated successfully.", variant: "success" };
 };
 
 export default updateDiscountAction;
