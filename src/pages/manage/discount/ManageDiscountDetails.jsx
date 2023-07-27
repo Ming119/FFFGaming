@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button, ButtonGroup } from "react-bootstrap";
-import { Form, useNavigate, useLoaderData, useActionData } from "react-router-dom";
+import { CaretLeftFill } from 'react-bootstrap-icons';
 import { FloatingLabel } from "../../../components/FloatingLabel";
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
+import { Button, ButtonGroup, Row, Col, Card } from "react-bootstrap";
+import { Link, Form, useNavigate, useLoaderData, useActionData } from "react-router-dom";
 
 export const ManageDiscountDetails = () => {
   const discount = useLoaderData();
@@ -40,28 +41,55 @@ export const ManageDiscountDetails = () => {
     <Form method="POST">
       <input type="hidden" name="id" id="id" value={ discount.id } />
       
-      <FloatingLabel type="text" name="discountCode" id="discountCode" label="優惠碼"
-        disabled={ !isEditabled } value={ discountCode } onChange={ onDiscountCodeChange }/>
+      <Row className="my-3">
+        <Col xs={ 2 }>
+          <Button as={ Link } to=".." variant="outline-primary" size="sm" className='my-3'>
+            <CaretLeftFill />返回
+          </Button>
+        </Col>
 
-      <label htmlFor="discountPersentage" className="form-label">折扣比例</label>
-      <input type="range" className="form-range" id="discountPersentage" name="discountPersentage"
-        min="1" max="100" step="1" value={ discountPersentage } disabled={ !isEditabled }
-        onChange={ onDiscountPersentageChange }></input>
-      <div className="form-text">目前折扣比例為 <span id="discountPersentageValue">{ discountPersentage }</span>%</div>
+        <Col xs={ 8 }>
+          <Card>
+            <Card.Body>
+              <Card.Title className="text-center fs-1 fw-bold">優惠碼詳情</Card.Title>
+              <hr />
 
-      <div className="form-check">
-        <input className="form-check-input" type="checkbox" id="isActive" name="isActive"
-        onChange={ onIsActiveCheckboxChange } checked={ isActive } />
-        <label className="form-check-label" htmlFor="isActive">可用</label>
-      </div>
+              <Row>
+                <Col>
+                  <FloatingLabel type="text" name="discountCode" id="discountCode" label="優惠碼"
+                    disabled={ !isEditabled } value={ discountCode } onChange={ onDiscountCodeChange }/>
+                </Col>
+                <Col className="my-3">
+                  <label htmlFor="discountPersentage" className="form-label">折扣比例 : { discountPersentage } %</label>
+                  <input type="range" className="form-range" id="discountPersentage" name="discountPersentage"
+                    min="1" max="100" step="1" value={ discountPersentage } disabled={ !isEditabled }
+                    onChange={ onDiscountPersentageChange } />
+                </Col>
+              </Row>
 
-      <ButtonGroup className="mb-3">
-        { isEditabled ?
-          <Button type="submit" variant="success" onClick={ onEditOrSaveBtnClick }>儲存</Button> :
-          <Button type="submit" variant="primary" onClick={ onEditOrSaveBtnClick }>編輯</Button>
-        }
-        <Button variant="danger" onClick={ onDeleteBtnClick }>刪除</Button>
-      </ButtonGroup>
+              <Row className="mx-auto my-3">
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" id="isActive" name="isActive"
+                    onChange={ onIsActiveCheckboxChange } checked={ isActive } disabled={ !isEditabled } />
+                  <label className="form-check-label" htmlFor="isActive">可用</label>
+                </div>
+              </Row>
+
+              <Row className='mx-auto my-3'>
+                <ButtonGroup className="mb-3">
+                  { isEditabled ?
+                    <Button type="submit" variant="success" onClick={ onEditOrSaveBtnClick }>儲存</Button> :
+                    <Button type="submit" variant="primary" onClick={ onEditOrSaveBtnClick }>編輯</Button>
+                  }
+                  <Button variant="danger" onClick={ onDeleteBtnClick }>刪除</Button>
+                </ButtonGroup>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xs={ 2 } />
+      </Row>
     </Form>
   );
 };

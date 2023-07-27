@@ -16,7 +16,7 @@ export const ManageDiscount = () => {
 		}, {
 			field: 'isActive', headerName: '可用', flex: 2,
 			valueGetter: (params) => {
-				return params.row.isActive ? '是' : '否'
+				return params.row.isActive ? '✔️' : '❌';
 			}
 		},{
 			field: '', headerName: '操作', flex: 1,
