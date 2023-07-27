@@ -30,6 +30,10 @@ import ManageUserDetails from "./pages/manage/users/ManageUserDetails";
 // orders pages
 import ManageOrders from "./pages/manage/orders/ManageOrders";
 import ManageOrderDetails from "./pages/manage/orders/ManageOrderDetails";
+// discounts pages
+import ManageDiscount from "./pages/manage/discount/ManageDiscount";
+import CreateDiscount from "./pages/manage/discount/CreateDiscount";
+import ManageDiscountDetails from "./pages/manage/discount/ManageDiscountDetails";
 // cart/checkout pages
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/cart/Checkout";
@@ -40,13 +44,13 @@ import cartLoader from "./loaders/cartLoader";
 import usersLoader from "./loaders/usersLoader";
 import ordersLoader from "./loaders/ordersLoader";
 import productsLoader from "./loaders/productsLoader";
+import discountsLoader from "./loaders/discountsLoader";
 import userDetailsLoader from "./loaders/userDetailsLoader";
 import orderDetailsLoader from "./loaders/orderDetailsLoader";
 import createProductLoader from "./loaders/createProductLoader";
 import productDetailsLoader from "./loaders/productDetailsLoader";
 import productsManageLoader from "./loaders/productsManageLoader";
-import discountCodesLoader from "./loaders/discountCodesLoader";
-import discountCodeDetailsLoader from "./loaders/discountCodeDetailsLoader";
+import discountDetailsLoader from "./loaders/discountDetailsLoader";
 
 // Actions
 import signInAction from "./actions/signInAction";
@@ -59,8 +63,8 @@ import createProductAction from "./actions/createProductAction";
 import updateProductAction from "./actions/updateProductAction";
 import resetPasswordAction from "./actions/resetPasswordAction";
 import updateProfileAction from "./actions/updateProfileAction";
-import createDiscountCodeAction from "./actions/createDiscountCodeAction";
-import updateDiscountCodeAction from "./actions/updateDiscountCodeAction";
+import createDiscountAction from "./actions/createDiscountAction";
+import updateDiscountAction from "./actions/updateDiscountAction";
 
 // Errors
 import ProductDetailsError from "./errors/ProductDetailsError";
@@ -104,8 +108,7 @@ export const router = createBrowserRouter(
 				<Route index
 					element={<Products />}
 					loader={ productsLoader } />
-				<Route
-					path=":id"
+				<Route path=":id"
 					element={<ProductDetails />}
 					errorElement={ <ProductDetailsError /> }
 					loader={ productDetailsLoader }
@@ -121,8 +124,7 @@ export const router = createBrowserRouter(
 						element={<CreateProduct />}
 						loader={ createProductLoader }
 						action={ createProductAction }/>
-					<Route
-						path=":id"
+					<Route path=":id"
 						element={<ManageProductDetails />}
 						loader={ productDetailsLoader }
 						action={ updateProductAction } />
@@ -140,23 +142,29 @@ export const router = createBrowserRouter(
 				</Route>
 
 				<Route path="users">
-					<Route index element={<ManageUsers />} loader={ usersLoader } />
-					<Route path="create" element={<CreateUser />} action={ createUserAction } />
-					<Route
-						path=":id"
+					<Route index
+						element={<ManageUsers />}
+						loader={ usersLoader } />
+					<Route path="create"
+						element={<CreateUser />}
+						action={ createUserAction } />
+					<Route path=":id"
 						element={<ManageUserDetails />}
 						loader={ userDetailsLoader }
 						action={ updateUserAction } />
 				</Route>
 
-				<Route path="discountcodes">
-					<Route index element={<ManageDiscountCodes />} loader={ discountCodesLoader } />
-					<Route path="create" element={<CreateDiscountCode />} action={ createDiscountCodeAction } />
-					<Route
-						path=":id"
-						element={<ManageDiscountCodeDetails />}
-						loader={ discountCodeDetailsLoader }
-						action={ updateDiscountCodeAction } />
+				<Route path="discounts">
+					<Route index
+						element={<ManageDiscount />}
+						loader={ discountsLoader } />
+					<Route path="create"
+						element={<CreateDiscount />}
+						action={ createDiscountAction } />
+					<Route path=":id"
+						element={<ManageDiscountDetails />}
+						loader={ discountDetailsLoader }
+						action={ updateDiscountAction }/>
 				</Route>
 			</Route>
 			
