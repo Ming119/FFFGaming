@@ -74,6 +74,7 @@ export const RootLayout = () => {
 						<Nav.Link as={ Link } to="manage/products">商品管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/orders">訂單管理</Nav.Link>
 						<Nav.Link as={ Link } to="manage/users"><PeopleFill /> 會員管理</Nav.Link>
+						<Nav.Link as={ Link } to="manage/discounts">優惠管理</Nav.Link>
 						{/* <Nav.Link as={ Link } to="statistics">統計</Nav.Link> */}
 						</>
 					)}

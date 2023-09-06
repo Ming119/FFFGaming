@@ -5,7 +5,7 @@ export const Home = () => {
 
 	return (
 		<div className="home">
-            <Carousel>
+			<Carousel>
 				<Carousel.Item>
 					<img src={ test1 }></img>
 					<Carousel.Caption>
@@ -21,7 +21,7 @@ export const Home = () => {
 					</Carousel.Caption>
 				</Carousel.Item>
 			</Carousel>
-        </div>
+		</div>
 	);
 };
 
