@@ -6,6 +6,16 @@ import { CaretLeftFill, PlusSquareDotted } from 'react-bootstrap-icons';
 import { Card, CloseButton, ButtonGroup, Button, Col, Image, Row, OverlayTrigger, Popover, ListGroup,Accordion } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 
+import React, {Component} from 'react';
+import Select from 'react-select';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const Selection = [
+    { label: "Color"},
+    { label: "Size"},
+    { label: "Value"}
+];
+
 export const ManageProductDetails = () => {
 
     const { id } = useParams();
@@ -200,6 +210,15 @@ export const ManageProductDetails = () => {
                                 <Accordion.Item eventKey={ index } key={ index }>
                                     <Accordion.Header><CloseButton onClick={ () => removeAttribute(index) }/> 屬性 #{ index + 1}</Accordion.Header>
                                     <Accordion.Body>
+                                        屬性名稱<div className="container">
+        <div className="row">
+          <div className="col-md-3"></div>
+          <div className="col-md-6">
+            <Select options={Selection} />
+          </div>
+          <div className="col-md-4"></div>
+        </div>
+      </div>
                                         <Row>
                                             <Col>
                                                 <FloatingLabel type="text" name="attributeName" label="屬性名稱"
