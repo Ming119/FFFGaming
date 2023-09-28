@@ -10,11 +10,6 @@ import React, {Component} from 'react';
 import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Selection = [
-    { label: "Color"},
-    { label: "Size"},
-    { label: "Value"}
-];
 
 export const ManageProductDetails = () => {
 
@@ -30,6 +25,12 @@ export const ManageProductDetails = () => {
     const [ coverImageDataURL, setCoverImageDataURL ] = useState(product.images[0]);
     const [ imagesDataURL, setImagesDataURL ] = useState(product.images.slice(1));
     const [ attributes, setAttributes ] = useState(product.attributes);
+
+    const Selection = [
+        { label: "Color"},
+        { label: "Size"},
+        { label: "Value"}
+    ];
 
     const handleImagechange = (setImage) => {
         const fileInput = document.createElement('input');
@@ -210,15 +211,16 @@ export const ManageProductDetails = () => {
                                 <Accordion.Item eventKey={ index } key={ index }>
                                     <Accordion.Header><CloseButton onClick={ () => removeAttribute(index) }/> 屬性 #{ index + 1}</Accordion.Header>
                                     <Accordion.Body>
-                                        屬性名稱<div className="container">
-        <div className="row">
-          <div className="col-md-3"></div>
-          <div className="col-md-6">
-            <Select options={Selection} />
-          </div>
-          <div className="col-md-4"></div>
-        </div>
-      </div>
+                                        屬性名稱
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col-md-3"></div>
+                                                    <div className="col-md-6">
+                                                        <Select options={Selection} />
+                                                    </div>
+                                                <div className="col-md-4"></div>
+                                            </div>
+                                        </div>
                                         <Row>
                                             <Col>
                                                 <FloatingLabel type="text" name="attributeName" label="屬性名稱"
