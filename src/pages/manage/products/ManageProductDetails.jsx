@@ -26,11 +26,16 @@ export const ManageProductDetails = () => {
     const [ imagesDataURL, setImagesDataURL ] = useState(product.images.slice(1));
     const [ attributes, setAttributes ] = useState(product.attributes);
 
+    const [selectedSelection, setSelectedSelection] = useState("");
     const Selection = [
-        { label: "Color"},
-        { label: "Size"},
-        { label: "Value"}
+        { label: "Color", value: 10},
+        { label: "Size", value: 20},
+        { label: "Value", value: 30}
     ];
+
+    const handleTypeSelect = (e) => {
+        setSelectedSelection(e.value);
+      };
 
     const handleImagechange = (setImage) => {
         const fileInput = document.createElement('input');
@@ -140,7 +145,8 @@ export const ManageProductDetails = () => {
                         <hr />
                         <Form method='POST'>
                             <input type="hidden" name="id" value={ id } />
-
+                            
+                            {/*
                             <Row className='my-3'>
                                 { coverImageDataURL && (
                                     <Col xs={ 2 }>
@@ -183,13 +189,15 @@ export const ManageProductDetails = () => {
                                     <PlusSquareDotted size="100%" onClick={ onAddImageClick }/>
                                 </Col>
                             </Row>
+                            */}
 
                             <Row className='my-3'>
                                 <Col><FloatingLabel type="text" name="productName" id="productName" value={ productName }
                                     label="商品名稱" onChange={ (e) => setProductName(e.target.value) }/></Col>
-
-                                <Col><FloatingLabel type="number" name="price" id="price" value={ price }
+                            
+                            {/*    <Col><FloatingLabel type="number" name="price" id="price" value={ price }
                                     label="價格" onChange={ (e) => setPrice(e.target.value) }/></Col>
+                            */}
                             </Row>
                             
                             <ReactQuill 
@@ -216,7 +224,12 @@ export const ManageProductDetails = () => {
                                             <div className="row">
                                                 <div className="col-md-3"></div>
                                                     <div className="col-md-6">
-                                                        <Select options={Selection} />
+                                                        <Select  name="Selects" 
+                                                         options={Selection}
+                                                         onChange={handleTypeSelect}
+                                                         value={Selection.find(function (option) {
+                                                            return option.value === selectedSelection;
+                                                          })}/>
                                                     </div>
                                                 <div className="col-md-4"></div>
                                             </div>
