@@ -145,7 +145,7 @@ export const ManageProductDetails = () => {
                         <hr />
                         <Form method='POST'>
                             <input type="hidden" name="id" value={ id } />
-                            
+
                             {/*
                             <Row className='my-3'>
                                 { coverImageDataURL && (
@@ -214,6 +214,7 @@ export const ManageProductDetails = () => {
                                 value={ richText }
                                 onChange={ setRichText } />
 
+                            {/*
                             <Accordion className='my-3'>
                             { attributes.map((attribute, index) => (
                                 <Accordion.Item eventKey={ index } key={ index }>
@@ -258,6 +259,7 @@ export const ManageProductDetails = () => {
                                 </Accordion.Item>
                             )) }
                             </Accordion>
+                            */}
                             
                             <Row className='mx-auto my-3'>
                             <Button type="button" variant='primary' onClick={ onAddAttributeClick }>增加屬性</Button>
