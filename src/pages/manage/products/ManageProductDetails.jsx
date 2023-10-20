@@ -7,7 +7,9 @@ import { Card, CloseButton, ButtonGroup, Button, Col, Image, Row, OverlayTrigger
 import ReactQuill from 'react-quill';
 
 import React, {Component} from 'react';
+import { ReactDOM } from 'react-dom';
 import Select from 'react-select';
+import ReactScrollableList from 'react-scrollable-list'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -25,13 +27,16 @@ export const ManageProductDetails = () => {
     const [ coverImageDataURL, setCoverImageDataURL ] = useState(product.images[0]);
     const [ imagesDataURL, setImagesDataURL ] = useState(product.images.slice(1));
     const [ attributes, setAttributes ] = useState(product.attributes);
-
+    
+    //selection
     const [selectedSelection, setSelectedSelection] = useState("");
     const Selection = [
         { label: "Color", value: 10},
         { label: "Size", value: 20},
         { label: "Value", value: 30}
     ];
+
+    
 
     const handleTypeSelect = (e) => {
         setSelectedSelection(e.value);
@@ -130,6 +135,18 @@ export const ManageProductDetails = () => {
         sessionStorage.setItem('richText', richText);
     }, [richText]);
 
+    let listItems = []
+    for (let i = 0; i < 10000; i++) {
+        listItems.push(
+            { id: i, 
+              content: i 
+            })
+    }
+
+    const styles = {
+        border: '3px solid rgba(0, 0, 0)', 
+   };
+
     return (
     <div className="manage-product-details">
         <Row className="my-3">
@@ -190,7 +207,6 @@ export const ManageProductDetails = () => {
                                 </Col>
                             </Row>
                             */}
-
                             <Row className='my-3'>
                                 <Col><FloatingLabel type="text" name="productName" id="productName" value={ productName }
                                     label="商品名稱" onChange={ (e) => setProductName(e.target.value) }/></Col>
@@ -261,6 +277,19 @@ export const ManageProductDetails = () => {
                             </Accordion>
                             */}
                             
+                            <div style={styles}>
+                            <Row className='mx-auto my-3'>   
+                        
+                                <ReactScrollableList
+                                    listItems={listItems}
+                                    heightOfItem={10}
+                                    maxItemsToRender={101}
+                                    style={{ color: '#333' }}
+                                />
+                            
+                            </Row>
+                            </div>
+
                             <Row className='mx-auto my-3'>
                             <Button type="button" variant='primary' onClick={ onAddAttributeClick }>增加屬性</Button>
                             </Row>
@@ -282,6 +311,7 @@ export const ManageProductDetails = () => {
         </Row>
     </div>
     );
+    
 };
 
 export default ManageProductDetails;
